@@ -11,6 +11,12 @@ channel of influence be named and traced?*
 > renamed Cosmic Scout at v1. Biorhythm has been removed — tested and found
 > invalid (Hines 1998).
 
+## Screenshots
+
+![Dashboard — composite guidance with evidence-badged cycle bars](screenshots/CS-1.png)
+
+![Cosmos — Tropical Zodiac with natal chart](screenshots/CS-2.png)
+
 ## Architecture
 
 Cosmic Scout runs entirely offline except for one opt-in feature (NOAA space
