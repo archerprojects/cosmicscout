@@ -1,0 +1,10 @@
+# Cosmic Scout — desktop entry (v1.0.0 — Tuesday 3 November 2026)
+[Desktop Entry]
+Name=Cosmic Scout
+Comment=Personal astrology and chronobiology
+Exec=cosmicscout.sh
+Icon=org.cosmicscout.app
+Terminal=false
+Type=Application
+Categories=Education;Astronomy;
+Keywords=astrology;chronobiology;cycles;circadian;horoscope;

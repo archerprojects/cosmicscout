@@ -1,0 +1,30 @@
+lunardate.py — VENDORED
+=======================
+Cosmic Scout note (v1.0.0 — Tuesday 3 November 2026)
+
+Source:   lunardate 0.3.0  (LI Daobing <lidaobing@gmail.com>)
+          https://pypi.org/project/lunardate/
+Derived:  the "lunar" project (Fung F. Lee & Ricky Yeung, 1988–2001)
+License:  GPL-3.0-or-later (PyPI metadata, upstream setup.py and LICENSE.txt,
+          checked 3 November 2026). The original "lunar" project is GPL-2+
+          ("version 2 ... or any later version"; Debian copyright). Both are
+          compatible with Cosmic Scout's GPL-3.0-or-later; listed in
+          THIRD_PARTY_LICENSES.md. Byte-for-byte identical to upstream tag v0.3.0.
+
+Why vendored (not a pip/Flatpak dependency):
+  * Single pure-Python file, zero compiled code, no third-party imports beyond
+    the stdlib. Vendoring is lighter and lower-risk than a manifest source entry
+    with its own build step — the same reasoning applied to flatlib.
+  * Deterministic table-driven data; nothing to compile against the KDE SDK.
+
+Range limitation (IMPORTANT):
+  Chinese-calendar years 1900–2099 only. Solar dates outside roughly
+  1900-01-31 .. 2100-ish raise ValueError. engines/lunar_calendar.py wraps every
+  call and returns a graceful "unavailable" result outside this window rather
+  than letting the exception surface. All living users are in range; historical
+  (pre-1900) birth dates are not supported.
+
+Consumed by:
+  chs/engines/lunar_calendar.py  — the only module that imports this. Nothing
+  else touches lunardate directly, so if the vendored lib is ever swapped, the
+  engine is the single edit point.

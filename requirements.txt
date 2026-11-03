@@ -1,0 +1,6 @@
+# Cosmic Scout — Python dependencies (v1.0.0 — Tuesday 3 November 2026)
+# Run from source:  python3 chs/main.py
+# flatlib 0.2.3 is vendored in chs/flatlib/ (see chs/flatlib/VENDORED.txt); do not pip-install it.
+PyQt5==5.15.11
+ephem==4.2.1
+pyswisseph==2.10.3.2

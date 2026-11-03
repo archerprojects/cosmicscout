@@ -1,0 +1,15 @@
+flatlib 0.2.3 — vendored into Cosmic Scout.
+
+Origin : https://pypi.org/project/flatlib/  (upstream: https://github.com/flatangle/flatlib)
+Version: 0.2.3
+License: MIT (see LICENSE in this directory)
+
+Why vendored:
+  flatlib is unmaintained on PyPI and its release pins an old pyswisseph that
+  fails to build on Python 3.12. The library's own Python is 3.12-clean; only
+  that stale pin was the problem. Vendoring lets Cosmic Scout run flatlib against
+  a modern pyswisseph (2.10.3.2) and removes one unverifiable PyPI URL from the
+  Flatpak manifest. pyswisseph remains a real (compiled) dependency.
+
+Do not edit vendored sources except to record a deliberate, documented patch here.
+No patches applied — files are byte-for-byte upstream 0.2.3.

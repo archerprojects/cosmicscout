@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Cosmic Scout — AppStream metainfo (v1.0.0 — Tuesday 3 November 2026) -->
+<component type="desktop-application">
+  <id>org.cosmicscout.app</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Cosmic Scout</name>
+  <summary>Personal astrology and chronobiology</summary>
+  <description>
+    <p>
+      Cosmic Scout is a profile-driven calculator for the cycles that shape a
+      person's day, week and month — circadian, ultradian, seasonal and lunar —
+      alongside a Cosmos wing of astrological and earth traditions. It grades
+      everything it shows by whether a channel of influence can be named and
+      traced, and it runs entirely offline except for one clearly opt-in feature.
+    </p>
+    <p>
+      City lookup uses data derived from GeoNames (geonames.org), licensed
+      under Creative Commons Attribution 4.0.
+    </p>
+  </description>
+  <launchable type="desktop-id">org.cosmicscout.app.desktop</launchable>
+  <developer id="net.proton.archerprojects">
+    <name>archerprojects</name>
+  </developer>
+  <url type="homepage">https://github.com/archerprojects/CosmicScout</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Dashboard — composite guidance surface bound to a saved profile</caption>
+      <image>https://raw.githubusercontent.com/archerprojects/CosmicScout/main/screenshots/CS-1.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Cosmos wing — astrological and earth traditions</caption>
+      <image>https://raw.githubusercontent.com/archerprojects/CosmicScout/main/screenshots/CS-2.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.0" date="2026-11-03">
+      <description>
+        <p>Initial release. Dashboard composite guidance engine, cycles pages,
+           records with journal and pattern analysis, Cosmos wing (Moon and Sky,
+           tropical, sidereal, BaZi, Shengxiao, earth traditions), and opt-in NOAA
+           space weather.</p>
+      </description>
+    </release>
+  </releases>
+</component>
