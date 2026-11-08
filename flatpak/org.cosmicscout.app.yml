@@ -1,7 +1,7 @@
-# Cosmic Scout — Flatpak manifest (v1.0.0 — Tuesday 3 November 2026)
+# Cosmic Scout — Flatpak manifest (v1.0.1 — Sunday 8 November 2026)
 #
-# Runtime + PyQt BaseApp per the build that reached an AppStream-validated,
-# launching state. flatlib is VENDORED into chs/flatlib (see
+# Runtime: KDE 6.11 + PyQt BaseApp 6.11 (PyQt6 6.11.0, Python 3.13). Wayland
+# native, X11 only as a fallback. flatlib is VENDORED into chs/flatlib (see
 # chs/flatlib/VENDORED.txt) and ships with the app source — it is not a pip
 # dependency. pyswisseph 2.10.3.2 is a real (compiled) dependency and is what
 # the vendored flatlib calls at runtime.
@@ -10,15 +10,15 @@
 # verified against the PyPI JSON API on 2026-07-09.
 app-id: org.cosmicscout.app
 runtime: org.kde.Platform
-runtime-version: '5.15-24.08'
+runtime-version: '6.11'
 sdk: org.kde.Sdk
 base: com.riverbankcomputing.PyQt.BaseApp
-base-version: '5.15-24.08'
+base-version: '6.11'
 command: cosmicscout.sh
 finish-args:
   - --share=ipc
-  - --socket=x11
   - --socket=wayland
+  - --socket=fallback-x11
   - --device=dri
   # --share=network is required ONLY by the Space Weather feature, which is an
   # explicit opt-in in Settings, OFF by default. When off, the app makes no

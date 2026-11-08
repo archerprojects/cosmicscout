@@ -1,5 +1,5 @@
 """
-Cosmic Scout — app_state.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — app_state.py  (v1.0.1 — Sunday 8 November 2026)
 
 App-wide state: the active profile, the dashboard scale, and settings
 (including the space-weather network opt-in). One source of truth; the

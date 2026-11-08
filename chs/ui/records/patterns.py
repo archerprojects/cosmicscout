@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/patterns.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/records/patterns.py  (v1.0.1 — Sunday 8 November 2026)
 
 The Records > Patterns surface. Two engines, both biased to silence:
 
@@ -21,11 +21,11 @@ It deliberately shows WHY circadian/ultradian are absent (a daily log can't
 resolve an intraday rhythm) so their absence doesn't read as an omission.
 """
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QScrollArea,
     QMessageBox,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT
 from data import store
@@ -39,7 +39,7 @@ _DISCOVERY_MODAL_SHOWN = False
 
 def _lbl(t, size=15, muted=False, bold=False):
     l = QLabel(t)
-    l.setTextInteractionFlags(Qt.TextSelectableByMouse)
+    l.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     col = "#777777" if muted else C["text"]
     l.setStyleSheet(f"color:{col};font-size:{size}px;background:transparent;"
                     f"{'font-weight:bold;' if bold else ''}")
@@ -48,7 +48,7 @@ def _lbl(t, size=15, muted=False, bold=False):
 
 
 def _divider():
-    f = QFrame(); f.setFrameShape(QFrame.HLine); f.setFrameShadow(QFrame.Plain)
+    f = QFrame(); f.setFrameShape(QFrame.Shape.HLine); f.setFrameShadow(QFrame.Shadow.Plain)
     f.setStyleSheet(f"background:{C['border']};max-height:1px;border:none;margin:6px 0;")
     return f
 
@@ -76,7 +76,7 @@ class PatternsPage(QWidget):
             "unless a pattern is real.", size=13, muted=True))
 
         refresh = QPushButton("Analyse my log")
-        refresh.setCursor(Qt.PointingHandCursor)
+        refresh.setCursor(Qt.CursorShape.PointingHandCursor)
         refresh.setStyleSheet(
             f"QPushButton{{background:{C['accent']};color:#fff;border:none;"
             f"border-radius:5px;padding:7px 16px;font-weight:bold;}}"
@@ -87,7 +87,7 @@ class PatternsPage(QWidget):
         root.addWidget(_divider())
 
         self._scroll = QScrollArea(); self._scroll.setWidgetResizable(True)
-        self._scroll.setFrameShape(QFrame.NoFrame)
+        self._scroll.setFrameShape(QFrame.Shape.NoFrame)
         self._scroll.setStyleSheet("QScrollArea{background:transparent;}")
         self._body = QWidget(); self._body_lay = QVBoxLayout(self._body)
         self._body_lay.setContentsMargins(0, 0, 0, 0); self._body_lay.setSpacing(8)
@@ -185,7 +185,7 @@ class PatternsPage(QWidget):
             head = QHBoxLayout(); head.setSpacing(8)
             head.addWidget(_lbl(f"Candidate ~{d.period_days:.1f}-day rhythm",
                                 size=16, bold=True))
-            head.addWidget(self._maturity_badge(d.provisional), 0, Qt.AlignVCenter)
+            head.addWidget(self._maturity_badge(d.provisional), 0, Qt.AlignmentFlag.AlignVCenter)
             head.addStretch(1)
             lay.addLayout(head)
             lay.addWidget(_lbl(d.message, size=13, muted=True))
@@ -220,7 +220,7 @@ class PatternsPage(QWidget):
             return
         _DISCOVERY_MODAL_SHOWN = True
         box = QMessageBox(self)
-        box.setIcon(QMessageBox.Information)
+        box.setIcon(QMessageBox.Icon.Information)
         box.setWindowTitle("About rhythm discovery")
         box.setText("Read this before trusting a discovered rhythm.")
         box.setInformativeText(
@@ -234,8 +234,8 @@ class PatternsPage(QWidget):
             "manufacture rhythms that aren't real.\n\n"
             "Keep logging honestly and consistently. The more accurate days you "
             "add, the more this can be trusted — or correctly rejected.")
-        box.setStandardButtons(QMessageBox.Ok)
-        box.exec_()
+        box.setStandardButtons(QMessageBox.StandardButton.Ok)
+        box.exec()
 
 
 def build_page(state):

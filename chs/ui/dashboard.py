@@ -1,6 +1,6 @@
 """
 Cosmic Scout — Composite Guidance Dashboard
-dashboard.py  (v1.0.0 — Tuesday 3 November 2026)
+dashboard.py  (v1.0.1 — Sunday 8 November 2026)
 
 v1.11: optional NOAA space-weather row (CONTESTED), fetched off-thread.
 v1.3: consumes a real data.models.Profile (attribute access), not a dict.
@@ -25,12 +25,12 @@ Tapping a row opens that cycle's explanation (mechanism, badge, why it matters).
 from dataclasses import dataclass
 import sys, os
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QButtonGroup, QDialog, QFrame, QScrollArea,
 )
-from PyQt5.QtGui import QPainter, QColor, QFont, QPen
-from PyQt5.QtCore import Qt, QRectF, pyqtSignal, QThread, QTimer
+from PyQt6.QtGui import QPainter, QColor, QFont, QPen
+from PyQt6.QtCore import Qt, QRectF, pyqtSignal, QThread, QTimer
 
 # make the package root (chs/) importable whether run standalone or via main
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -102,7 +102,7 @@ class CycleRow(QWidget):
         super().__init__(parent)
         self.state = state
         self.setFixedHeight(self.ROW_H)
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setMinimumWidth(720)
 
     def mousePressEvent(self, e):
@@ -110,25 +110,25 @@ class CycleRow(QWidget):
 
     def paintEvent(self, _):
         p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         s = self.state
         is_bar = isinstance(s, CycleState)
         hue = QColor(s.hue)
 
         # icon disc
         disc = QRectF(20, self.ROW_H / 2 - 18, 36, 36)
-        p.setPen(Qt.NoPen)
+        p.setPen(Qt.PenStyle.NoPen)
         dc = QColor(s.hue); dc.setAlpha(38)
         p.setBrush(dc)
         p.drawEllipse(disc)
         p.setPen(QPen(hue))
         p.setFont(_f(15))
-        p.drawText(disc, Qt.AlignCenter, s.icon)
+        p.drawText(disc, Qt.AlignmentFlag.AlignCenter, s.icon)
 
         # name
         p.setPen(QPen(QColor(C_TEXT)))
         p.setFont(_f(11, bold=True))
-        p.drawText(self.BAR_X0, 16, 320, 20, Qt.AlignLeft | Qt.AlignVCenter, s.name)
+        p.drawText(self.BAR_X0, 16, 320, 20, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, s.name)
 
         # badge pill (right of name)
         name_w = p.fontMetrics().horizontalAdvance(s.name)
@@ -142,7 +142,7 @@ class CycleRow(QWidget):
             p.setPen(QPen(QColor(C_SUBTLE)))
             p.setFont(_f(10))
             p.drawText(self.BAR_X0, 40, self.BAR_X1 - self.BAR_X0 + 150, 24,
-                       Qt.AlignLeft | Qt.AlignVCenter, s.message)
+                       Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, s.message)
         p.end()
 
     def _draw_badge(self, p, x, y, badge):
@@ -152,10 +152,10 @@ class CycleRow(QWidget):
         w = p.fontMetrics().horizontalAdvance(txt) + 16
         rect = QRectF(x, y, w, 16)
         bg = QColor(col); bg.setAlpha(38)
-        p.setPen(Qt.NoPen); p.setBrush(bg)
+        p.setPen(Qt.PenStyle.NoPen); p.setBrush(bg)
         p.drawRoundedRect(rect, 8, 8)
         p.setPen(QPen(col))
-        p.drawText(rect, Qt.AlignCenter, txt)
+        p.drawText(rect, Qt.AlignmentFlag.AlignCenter, txt)
 
     def _draw_bar(self, p, s, hue):
         y = 48
@@ -166,7 +166,7 @@ class CycleRow(QWidget):
         r = h / 2.0
 
         # track
-        p.setPen(Qt.NoPen)
+        p.setPen(Qt.PenStyle.NoPen)
         p.setBrush(QColor(C_TRACK))
         p.drawRoundedRect(QRectF(x0, y, x1 - x0, h), r, r)
 
@@ -197,10 +197,10 @@ class CycleRow(QWidget):
         rx, rw = self.BAR_X1 + 22, 150
         p.setPen(QPen(QColor(C_TEXT)))
         p.setFont(_f(11, bold=True))
-        p.drawText(rx, 16, rw, 20, Qt.AlignRight | Qt.AlignVCenter, word)
+        p.drawText(rx, 16, rw, 20, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, word)
         p.setPen(QPen(QColor(C_SUBTLE)))
         p.setFont(_f(9))
-        p.drawText(rx, 44, rw, 18, Qt.AlignRight | Qt.AlignVCenter, timing)
+        p.drawText(rx, 44, rw, 18, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, timing)
 
 
 class SubBarRow(QWidget):
@@ -216,14 +216,14 @@ class SubBarRow(QWidget):
         super().__init__(parent)
         self.sub = sub
         self.setFixedHeight(self.ROW_H)
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setMinimumWidth(720)
 
     def mousePressEvent(self, e):
         self.clicked.emit(self.sub.key)
 
     def paintEvent(self, _):
-        p = QPainter(self); p.setRenderHint(QPainter.Antialiasing, True)
+        p = QPainter(self); p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         s = self.sub; hue = QColor(s.hue)
 
         # small connector tick + name
@@ -232,10 +232,10 @@ class SubBarRow(QWidget):
         x0, x1 = self.BAR_X0 + self.NAME_W, self.BAR_X1
         p.setPen(QPen(QColor(C_SUBTLE))); p.setFont(_f(9))
         name_w = int(x0) - 72 - 10
-        name = p.fontMetrics().elidedText("\u2514 " + s.name, Qt.ElideRight, name_w)
-        p.drawText(72, 0, name_w, self.ROW_H, Qt.AlignLeft | Qt.AlignVCenter, name)
+        name = p.fontMetrics().elidedText("\u2514 " + s.name, Qt.TextElideMode.ElideRight, name_w)
+        p.drawText(72, 0, name_w, self.ROW_H, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, name)
         cx = (x0 + x1) / 2.0; half = (x1 - x0) / 2.0; h = self.BAR_H; r = h / 2.0
-        p.setPen(Qt.NoPen); p.setBrush(QColor(C_TRACK))
+        p.setPen(Qt.PenStyle.NoPen); p.setBrush(QColor(C_TRACK))
         p.drawRoundedRect(QRectF(x0, y, x1 - x0, h), r, r)
         if s.rising and abs(s.peak_ahead) > abs(s.amplitude):
             light = QColor(hue); light.setAlpha(115); p.setBrush(light)
@@ -247,7 +247,7 @@ class SubBarRow(QWidget):
         # compact readout (phase word only)
         p.setPen(QPen(QColor(C_SUBTLE))); p.setFont(_f(8, bold=True))
         p.drawText(self.BAR_X1 + 22, 0, 150, self.ROW_H,
-                   Qt.AlignRight | Qt.AlignVCenter, s.phase_word)
+                   Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, s.phase_word)
         p.end()
 
 
@@ -266,28 +266,28 @@ class CompositeRow(QWidget):
         self.setMinimumWidth(720)
 
     def paintEvent(self, _):
-        p = QPainter(self); p.setRenderHint(QPainter.Antialiasing, True)
+        p = QPainter(self); p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         c = self.comp; hue = QColor(C_COMP)
 
         # filled icon disc
         disc = QRectF(18, self.ROW_H / 2 - 20, 40, 40)
-        p.setPen(Qt.NoPen); p.setBrush(hue)
+        p.setPen(Qt.PenStyle.NoPen); p.setBrush(hue)
         p.drawEllipse(disc)
         p.setPen(QPen(QColor("#ffffff"))); p.setFont(_f(17, bold=True))
-        p.drawText(disc, Qt.AlignCenter, "\u25c9")
+        p.drawText(disc, Qt.AlignmentFlag.AlignCenter, "\u25c9")
 
         p.setPen(QPen(QColor(C_TEXT))); p.setFont(_f(12, bold=True))
         title = "TODAY\u2019S WINDOW"
-        p.drawText(self.BAR_X0, 14, 360, 22, Qt.AlignLeft | Qt.AlignVCenter, title)
+        p.drawText(self.BAR_X0, 14, 360, 22, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, title)
         sub_x = self.BAR_X0 + p.fontMetrics().horizontalAdvance(title) + 12
         p.setPen(QPen(QColor(C_SUBTLE))); p.setFont(_f(8, bold=True))
-        p.drawText(sub_x, 15, 240, 20, Qt.AlignLeft | Qt.AlignVCenter,
+        p.drawText(sub_x, 15, 240, 20, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
                    "circadian + ultradian")
 
         # diverging bar
         y, x0, x1 = 52, self.BAR_X0, self.BAR_X1
         cx = (x0 + x1) / 2.0; half = (x1 - x0) / 2.0; h = 14; r = 7
-        p.setPen(Qt.NoPen); p.setBrush(QColor(C_TRACK))
+        p.setPen(Qt.PenStyle.NoPen); p.setBrush(QColor(C_TRACK))
         p.drawRoundedRect(QRectF(x0, y, x1 - x0, h), r, r)
         if c.rising and abs(c.peak_ahead) > abs(c.amplitude):
             light = QColor(hue); light.setAlpha(115); p.setBrush(light)
@@ -298,11 +298,11 @@ class CompositeRow(QWidget):
 
         # headline readout
         p.setPen(QPen(QColor(C_TEXT))); p.setFont(_f(11, bold=True))
-        p.drawText(self.BAR_X1 + 22, 44, 150, 20, Qt.AlignRight | Qt.AlignVCenter,
+        p.drawText(self.BAR_X1 + 22, 44, 150, 20, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
                    c.headline.split(" \u2014 ")[0])
         p.setPen(QPen(QColor(C_SUBTLE))); p.setFont(_f(9))
         tail = c.headline.split(" \u2014 ")[-1]
-        p.drawText(self.BAR_X0, 74, 470, 16, Qt.AlignLeft | Qt.AlignVCenter,
+        p.drawText(self.BAR_X0, 74, 470, 16, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
                    f"{tail} \u00b7 {c.timing}")
         p.end()
 
@@ -331,10 +331,14 @@ class CycleDialog(QDialog):
         badge.setFixedWidth(badge.fontMetrics().horizontalAdvance(state.badge) + 26)
         lay.addWidget(badge)
 
-        chan = QLabel("Channel:  " + state.channel)
-        chan.setWordWrap(True); chan.setFont(_f(10))
-        chan.setStyleSheet(f"color:{C_SUBTLE};")
-        lay.addWidget(chan)
+        # an EmptyNote (honest empty state) has no channel; show the line only
+        # for states that name one
+        channel = getattr(state, "channel", None)
+        if channel:
+            chan = QLabel("Channel:  " + channel)
+            chan.setWordWrap(True); chan.setFont(_f(10))
+            chan.setStyleSheet(f"color:{C_SUBTLE};")
+            lay.addWidget(chan)
 
         body = QLabel(state.detail)
         body.setWordWrap(True); body.setFont(_f(10))
@@ -366,7 +370,7 @@ class Dashboard(QWidget):
         self.setObjectName("Dashboard")
         self.setAutoFillBackground(True)
         # a QWidget subclass only paints its stylesheet background with this set
-        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setStyleSheet(f"QWidget#Dashboard {{ background:{C_BG}; }}")
         self.setMinimumSize(760, 560)
 
@@ -377,8 +381,8 @@ class Dashboard(QWidget):
         # scrollable body so rows never overlap or run off the bottom
         self._scroll = QScrollArea()
         self._scroll.setWidgetResizable(True)
-        self._scroll.setFrameShape(QFrame.NoFrame)
-        self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self._scroll.setFrameShape(QFrame.Shape.NoFrame)
+        self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self._scroll.setStyleSheet(f"QScrollArea {{ background:{C_BG}; border:none; }}")
         self._body_host = QWidget()
         self._body_host.setStyleSheet(f"background:{C_BG};")
@@ -423,7 +427,7 @@ class Dashboard(QWidget):
         tog = QHBoxLayout(); tog.setSpacing(0)
         for i, name in enumerate(("Day", "Week", "Month")):
             b = QPushButton(name); b.setCheckable(True); b.setFixedSize(72, 30)
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.setChecked(name == self.scale)
             b.setFont(_f(9, bold=True))
             b.setStyleSheet(self._toggle_css())
@@ -431,7 +435,7 @@ class Dashboard(QWidget):
             self.toggle_group.addButton(b, i); tog.addWidget(b)
         tw = QWidget(); tw.setLayout(tog)
         tw.setStyleSheet("background:transparent;")   # no light app-theme box behind the toggle
-        bar.addWidget(tw, 0, Qt.AlignTop)
+        bar.addWidget(tw, 0, Qt.AlignmentFlag.AlignTop)
         self.root.addLayout(bar)
 
         line = QFrame(); line.setFixedHeight(1)
@@ -448,7 +452,7 @@ class Dashboard(QWidget):
     def _build_footer(self):
         f = QHBoxLayout()
         legend = QPushButton("\u2295  Evidence badge legend")
-        legend.setFont(_f(9)); legend.setCursor(Qt.PointingHandCursor)
+        legend.setFont(_f(9)); legend.setCursor(Qt.CursorShape.PointingHandCursor)
         legend.setStyleSheet(f"QPushButton{{color:{C_SUBTLE};background:transparent;border:none;}}")
         legend.clicked.connect(self._show_legend)
         f.addWidget(legend); f.addStretch(1)
@@ -584,12 +588,12 @@ class Dashboard(QWidget):
     def _open_sub(self, key):
         sub = getattr(self, "_subs", {}).get(key)
         if sub is not None:
-            CycleDialog(sub, self).exec_()
+            CycleDialog(sub, self).exec()
 
     def _open_cycle(self, key):
         st = self._rows.get(key)
         if st is not None:
-            CycleDialog(st, self).exec_()
+            CycleDialog(st, self).exec()
 
     def _show_legend(self):
         d = QDialog(self); d.setWindowTitle("Evidence badges")
@@ -612,9 +616,9 @@ class Dashboard(QWidget):
             pill.setFixedWidth(pill.fontMetrics().horizontalAdvance(badge) + 24)
             d2 = QLabel(desc); d2.setWordWrap(True); d2.setFont(_f(9))
             d2.setStyleSheet(f"color:{C_TEXT};")
-            r.addWidget(pill, 0, Qt.AlignTop); r.addWidget(d2, 1)
+            r.addWidget(pill, 0, Qt.AlignmentFlag.AlignTop); r.addWidget(d2, 1)
             lay.addLayout(r)
-        d.exec_()
+        d.exec()
 
     def _wake_dt(self):
         wh, wm = self.profile.wake_hm()

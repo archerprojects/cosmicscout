@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_shengxiao.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — cosmos/astro_shengxiao.py  (v1.0.1 — Sunday 8 November 2026)
 
 The twelve-animal system (Shengxiao) — a first-class, lived tradition, carried on
 its own terms and TRADITIONAL-badged (which means "presented on its own terms,"
@@ -180,11 +180,11 @@ def relationship(a, b):
 # UI
 # ===========================================================================
 def build_page(state):
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea, QPushButton,
     )
-    from PyQt5.QtGui import QDesktopServices
-    from PyQt5.QtCore import Qt, QUrl
+    from PyQt6.QtGui import QDesktopServices
+    from PyQt6.QtCore import Qt, QUrl
 
     from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 
@@ -222,7 +222,7 @@ def build_page(state):
     outer.setContentsMargins(0, 0, 0, 0)
     scroll = QScrollArea()
     scroll.setWidgetResizable(True)
-    scroll.setFrameShape(QFrame.NoFrame)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
     body = QWidget()
     lay = QVBoxLayout(body)
@@ -401,14 +401,14 @@ def build_page(state):
         for src in state.shengxiao_sources():
             b = QPushButton("%s  \u2197" % src["name"])
             b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
             links_box.addWidget(b)
 
     def open_editor():
         from cosmos._sources_dialog import SourcesDialog
         dlg = SourcesDialog(state, page, sources_key="shengxiao")
-        if dlg.exec_():
+        if dlg.exec():
             render_links()
 
     edit_btn.clicked.connect(open_editor)

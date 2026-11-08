@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/moon_sky.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/moon_sky.py  (v1.0.1 — Sunday 8 November 2026)
 
 Moon & Sky page (Cosmos wing). Presents the astronomy engine: current moon phase
 with a drawn phase disc, upcoming phases, this month's traditional full-moon name,
@@ -11,12 +11,12 @@ UTC. Light theme.
 
 from datetime import datetime
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea, QGridLayout,
     QSizePolicy,
 )
-from PyQt5.QtGui import QPainter, QColor, QBrush, QPen
-from PyQt5.QtCore import Qt, QRectF, QSize
+from PyQt6.QtGui import QPainter, QColor, QBrush, QPen
+from PyQt6.QtCore import Qt, QRectF, QSize
 
 from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 from engines import astronomy as A
@@ -33,14 +33,14 @@ class MoonDisc(QWidget):
         self._f = max(0.0, min(1.0, illumination / 100.0))
         self._waxing = waxing
         self.setMinimumSize(96, 96)
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
     def sizeHint(self):
         return QSize(110, 110)
 
     def paintEvent(self, _ev):
         p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         w, h = self.width(), self.height()
         R = min(w, h) / 2.0 - 3
         cx, cy = w / 2.0, h / 2.0
@@ -52,11 +52,11 @@ class MoonDisc(QWidget):
         p.drawEllipse(disc)
 
         # clip to the disc, draw lit semicircle + terminator ellipse
-        from PyQt5.QtGui import QPainterPath
+        from PyQt6.QtGui import QPainterPath
         clip = QPainterPath()
         clip.addEllipse(disc)
         p.setClipPath(clip)
-        p.setPen(Qt.NoPen)
+        p.setPen(Qt.PenStyle.NoPen)
 
         f = self._f
         # lit half-disc: waxing -> right (start -90, span 180); waning -> left
@@ -94,7 +94,7 @@ def build_page(state):
 
     page = QWidget()
     outer = QVBoxLayout(page); outer.setContentsMargins(0, 0, 0, 0)
-    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.NoFrame)
+    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
     body = QWidget(); lay = QVBoxLayout(body)
     lay.setContentsMargins(32, 28, 32, 28); lay.setSpacing(16)

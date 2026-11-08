@@ -1,5 +1,5 @@
 """
-Cosmic Scout — data/store.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — data/store.py  (v1.0.1 — Sunday 8 November 2026)
 
 Local JSON persistence under ~/.local/share/cosmicscout/. Zero network.
 The single write path for all app data: profiles, daily logs, settings.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Cosmic Scout — AppStream metainfo (v1.0.0 — Tuesday 3 November 2026) -->
+<!-- Cosmic Scout — AppStream metainfo (v1.0.1 — Sunday 8 November 2026) -->
 <component type="desktop-application">
   <id>org.cosmicscout.app</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -36,6 +36,13 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.0.1" date="2026-11-08">
+      <description>
+        <p>Runtime update: PyQt6 on the KDE 6.11 runtime with Python 3.13. Runs
+           natively on Wayland, with X11 as a fallback. No feature changes. Fixes a
+           crash when opening an empty-state row on the Dashboard.</p>
+      </description>
+    </release>
     <release version="1.0.0" date="2026-11-03">
       <description>
         <p>Initial release. Dashboard composite guidance engine, cycles pages,

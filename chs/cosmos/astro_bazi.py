@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_bazi.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — cosmos/astro_bazi.py  (v1.0.1 — Sunday 8 November 2026)
 
 BaZi (八字) — the Four Pillars of Destiny. The peer of Shengxiao: same lived
 tradition, carried on its own terms and TRADITIONAL-badged. Pure date/time
@@ -212,12 +212,12 @@ def _animal(branch):
 
 
 def build_page(state):
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea, QGridLayout,
         QPushButton,
     )
-    from PyQt5.QtGui import QDesktopServices
-    from PyQt5.QtCore import Qt, QUrl
+    from PyQt6.QtGui import QDesktopServices
+    from PyQt6.QtCore import Qt, QUrl
     from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 
     EL_COLOR = {"Wood": "#5c8a4a", "Fire": "#c0623c", "Earth": "#b58a3c",
@@ -245,7 +245,7 @@ def build_page(state):
 
     page = QWidget()
     outer = QVBoxLayout(page); outer.setContentsMargins(0, 0, 0, 0)
-    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.NoFrame)
+    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
     body = QWidget(); lay = QVBoxLayout(body)
     lay.setContentsMargins(32, 28, 32, 28); lay.setSpacing(16)
@@ -280,27 +280,27 @@ def build_page(state):
     cols = [("Year", bz["pillars"]["year"]), ("Month", bz["pillars"]["month"]),
             ("Day", bz["pillars"]["day"]), ("Hour", bz["pillars"]["hour"])]
     for ci, (label, pil) in enumerate(cols):
-        head = QLabel(label); head.setAlignment(Qt.AlignCenter)
+        head = QLabel(label); head.setAlignment(Qt.AlignmentFlag.AlignCenter)
         head.setStyleSheet("color:%s;font-weight:bold;font-size:11px;" % LIGHT["subtle"])
         grid.addWidget(head, 0, ci)
         if pil is None:
-            box = QLabel("\u2014"); box.setAlignment(Qt.AlignCenter)
+            box = QLabel("\u2014"); box.setAlignment(Qt.AlignmentFlag.AlignCenter)
             box.setStyleSheet("color:%s;font-size:16px;" % LIGHT["subtle"])
             grid.addWidget(box, 1, ci)
-            sub2 = QLabel("needs time"); sub2.setAlignment(Qt.AlignCenter)
+            sub2 = QLabel("needs time"); sub2.setAlignment(Qt.AlignmentFlag.AlignCenter)
             sub2.setStyleSheet("color:%s;font-size:11px;" % LIGHT["warn"])
             grid.addWidget(sub2, 2, ci)
             continue
         stem_el = ELEMENTS[_stem_el(pil["stem"])]
-        stem = QLabel(STEMS[pil["stem"]]); stem.setAlignment(Qt.AlignCenter)
+        stem = QLabel(STEMS[pil["stem"]]); stem.setAlignment(Qt.AlignmentFlag.AlignCenter)
         stem.setStyleSheet("font-size:17px;font-weight:bold;color:%s;" % EL_COLOR[stem_el])
         grid.addWidget(stem, 1, ci)
         br = QLabel("%s (%s)" % (BRANCHES[pil["branch"]][0], _animal(pil["branch"])))
-        br.setAlignment(Qt.AlignCenter)
+        br.setAlignment(Qt.AlignmentFlag.AlignCenter)
         br.setStyleSheet("font-size:12px;color:%s;" % LIGHT["text"])
         grid.addWidget(br, 2, ci)
     if bz["pillars"]["day"]:
-        dmk = QLabel("\u25b2 Day Master"); dmk.setAlignment(Qt.AlignCenter)
+        dmk = QLabel("\u25b2 Day Master"); dmk.setAlignment(Qt.AlignmentFlag.AlignCenter)
         dmk.setStyleSheet("color:%s;font-size:11px;font-weight:bold;" % LIGHT["accent"])
         grid.addWidget(dmk, 3, 2)
     c1l.addLayout(grid)
@@ -356,7 +356,7 @@ def build_page(state):
             g.addWidget(a, 0, i)
             el = ELEMENTS[_stem_el(p["stem"])]
             pil = QLabel("%s\n%s" % (STEMS[p["stem"]], BRANCHES[p["branch"]][0]))
-            pil.setAlignment(Qt.AlignCenter)
+            pil.setAlignment(Qt.AlignmentFlag.AlignCenter)
             pil.setStyleSheet("font-size:11px;color:%s;" % EL_COLOR[el])
             g.addWidget(pil, 1, i)
         c3l.addLayout(g)
@@ -399,13 +399,13 @@ def build_page(state):
                 w.deleteLater()
         for src in state.bazi_sources():
             b = QPushButton("%s  \u2197" % src["name"]); b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
             links_box.addWidget(b)
 
     def open_editor():
         from cosmos._sources_dialog import SourcesDialog
-        if SourcesDialog(state, page, sources_key="bazi").exec_():
+        if SourcesDialog(state, page, sources_key="bazi").exec():
             render_links()
 
     edit_btn.clicked.connect(open_editor)

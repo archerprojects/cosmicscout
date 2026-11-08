@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/nav.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/nav.py  (v1.0.1 — Sunday 8 November 2026)
 
 Navigation shell pieces. WingPage renders a section that has its own sub-nav —
 Cosmos (the astro_* and trad_earth modules) and Records (Profile / Journal /
@@ -7,11 +7,11 @@ Settings) both use it. Light-themed, matching the application shell; only the
 Dashboard cockpit is dark.
 """
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QStackedWidget, QButtonGroup,
     QFrame, QLabel,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT
 
@@ -52,7 +52,7 @@ class WingPage(QWidget):
         for i, (label, _fn) in enumerate(items):
             b = QPushButton(label)
             b.setCheckable(True)
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.setChecked(i == 0)
             b.setStyleSheet(self._btn_css())
             # size to the label so long names ("Earth Traditions") never clip;

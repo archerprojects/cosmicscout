@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Cosmic Scout — main.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — main.py  (v1.0.1 — Sunday 8 November 2026)
 
 Application entry point and MainWindow. A light shell with a top nav:
 
@@ -19,12 +19,12 @@ import sys
 # make the package root (chs/) importable when run as a script
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt5.QtWidgets import (                       # noqa: E402
+from PyQt6.QtWidgets import (                       # noqa: E402
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
     QStackedWidget, QButtonGroup, QFrame, QMessageBox,
 )
-from PyQt5.QtCore import Qt, QSettings               # noqa: E402
-from PyQt5.QtGui import QIcon                        # noqa: E402
+from PyQt6.QtCore import Qt, QSettings               # noqa: E402
+from PyQt6.QtGui import QIcon                        # noqa: E402
 
 from ui.theme import LIGHT, light_qss               # noqa: E402
 from ui.dashboard import Dashboard                   # noqa: E402
@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
         for i, name in enumerate(NAV_ITEMS):
             b = QPushButton(name)
             b.setCheckable(True)
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.setChecked(i == 0)
             b.setFixedHeight(34)
             b.setStyleSheet(self._nav_css())
@@ -189,7 +189,7 @@ def main():
     app.setStyleSheet(light_qss())
     win = MainWindow()
     win.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

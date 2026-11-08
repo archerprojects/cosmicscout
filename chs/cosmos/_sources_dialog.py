@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/_sources_dialog.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — cosmos/_sources_dialog.py  (v1.0.1 — Sunday 8 November 2026)
 
 Reusable editor for a Cosmos wing's "Further Reading" out-links. Generalized over
 a sources_key: the dialog reads/writes via state.<key>_sources() /
@@ -9,11 +9,11 @@ replace, add, remove, or reset. Persisted through AppState -> data.store (the
 single write path). Out-links only; no third-party text is stored.
 """
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton,
     QScrollArea, QWidget, QFrame,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT
 
@@ -51,7 +51,7 @@ class SourcesDialog(QDialog):
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.NoFrame)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
         self._holder = QWidget()
         self._rows_lay = QVBoxLayout(self._holder)
         self._rows_lay.setContentsMargins(0, 0, 0, 0)
@@ -61,7 +61,7 @@ class SourcesDialog(QDialog):
 
         add = QPushButton("+ Add source")
         add.clicked.connect(lambda: self._add_row("", ""))
-        root.addWidget(add, 0, Qt.AlignLeft)
+        root.addWidget(add, 0, Qt.AlignmentFlag.AlignLeft)
 
         buttons = QHBoxLayout()
         reset = QPushButton("Reset to defaults")

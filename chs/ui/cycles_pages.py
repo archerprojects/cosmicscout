@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/cycles_pages.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/cycles_pages.py  (v1.0.1 — Sunday 8 November 2026)
 
 The Cycles wing: the "why" behind every bar on the dashboard. It reads the same
 composite cycle engine the dashboard uses (engines.cycles.day_cycles) and lays
@@ -15,10 +15,10 @@ informative and never blank.
 """
 
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea, QSizePolicy,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 from engines.cycles import day_cycles
@@ -73,11 +73,11 @@ def _cycle_card(state, is_sub=False):
     fs = 13 if is_sub else 15
     t.setStyleSheet(f"font-size:{fs}px;font-weight:bold;color:{LIGHT['text']};")
     head.addWidget(t)
-    head.addWidget(_badge_pill(state.badge), 0, Qt.AlignVCenter)
+    head.addWidget(_badge_pill(state.badge), 0, Qt.AlignmentFlag.AlignVCenter)
     head.addStretch(1)
     phase = QLabel(_phase_line(state))
     phase.setStyleSheet(f"color:{LIGHT['accent']};font-size:12px;font-weight:bold;")
-    head.addWidget(phase, 0, Qt.AlignVCenter)
+    head.addWidget(phase, 0, Qt.AlignmentFlag.AlignVCenter)
     cl.addLayout(head)
 
     # the named channel — the core honesty claim
@@ -156,7 +156,7 @@ def build_page(state=None):
     # scrollable card list
     scroll = QScrollArea()
     scroll.setWidgetResizable(True)
-    scroll.setFrameShape(QFrame.NoFrame)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
     scroll.setStyleSheet(f"QScrollArea {{ background:{LIGHT['bg']}; }}")   # scoped: don't box card labels
     inner = QWidget()
     il = QVBoxLayout(inner)
@@ -180,7 +180,7 @@ def build_page(state=None):
     for badge, meaning in _BADGE_MEANING.items():
         row = QHBoxLayout()
         row.setSpacing(8)
-        row.addWidget(_badge_pill(badge), 0, Qt.AlignTop)
+        row.addWidget(_badge_pill(badge), 0, Qt.AlignmentFlag.AlignTop)
         m = QLabel(meaning)
         m.setWordWrap(True)
         m.setStyleSheet(f"color:{LIGHT['text']};font-size:12px;")
@@ -192,5 +192,5 @@ def build_page(state=None):
     scroll.setWidget(inner)
     outer.addWidget(scroll, 1)
 
-    page.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    page.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
     return page

@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/profile_dialog.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/records/profile_dialog.py  (v1.0.1 — Sunday 8 November 2026)
 
 The Records > Profile surface. Two parts:
 
@@ -20,12 +20,12 @@ comma-decimal), the single source of truth for coordinate parsing.
 
 from datetime import date
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QDialog, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QCheckBox,
     QPushButton, QFrame, QDoubleSpinBox, QDateEdit, QMessageBox, QListWidget,
     QListWidgetItem, QSpinBox, QComboBox, QScrollArea,
 )
-from PyQt5.QtCore import Qt, QDate
+from PyQt6.QtCore import Qt, QDate
 
 from ui.theme import LIGHT
 from data.models import Profile
@@ -143,7 +143,7 @@ def _input_css():
 
 def _lbl(text, small=False, muted=False, bold=False):
     l = QLabel(text)
-    l.setTextInteractionFlags(Qt.TextSelectableByMouse)
+    l.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     col = "#777777" if muted else C["text"]
     size = 11 if small else 13
     weight = "font-weight:bold;" if bold else ""
@@ -153,7 +153,7 @@ def _lbl(text, small=False, muted=False, bold=False):
 
 
 def _divider():
-    f = QFrame(); f.setFrameShape(QFrame.HLine); f.setFrameShadow(QFrame.Plain)
+    f = QFrame(); f.setFrameShape(QFrame.Shape.HLine); f.setFrameShadow(QFrame.Shadow.Plain)
     f.setStyleSheet(f"background:{C['border']};max-height:1px;border:none;margin:3px 0;")
     return f
 
@@ -183,7 +183,7 @@ class ProfileForm(QDialog):
         # desktop so the form scrolls instead of overflowing. Buttons are pinned
         # outside the scroll area, so Save is always reachable.
         try:
-            from PyQt5.QtWidgets import QApplication
+            from PyQt6.QtWidgets import QApplication
             avail = QApplication.primaryScreen().availableGeometry().height()
         except Exception:
             avail = 900
@@ -203,8 +203,8 @@ class ProfileForm(QDialog):
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.NoFrame)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         body = QWidget()
         vl = QVBoxLayout(body); vl.setSpacing(10); vl.setContentsMargins(20, 16, 20, 16)
 
@@ -514,7 +514,7 @@ class ProfilePage(QWidget):
             ("Edit…",      self._edit,       False),
             ("Delete",     self._delete,     False),
         ):
-            b = QPushButton(text); b.setCursor(Qt.PointingHandCursor)
+            b = QPushButton(text); b.setCursor(Qt.CursorShape.PointingHandCursor)
             if not primary:
                 b.setObjectName("cancel")
             b.setStyleSheet(_DIALOG_SS)
@@ -534,7 +534,7 @@ class ProfilePage(QWidget):
         for alias in self.state.profiles():
             label = f"{alias}    ● active" if alias == active else alias
             item = QListWidgetItem(label)
-            item.setData(Qt.UserRole, alias)
+            item.setData(Qt.ItemDataRole.UserRole, alias)
             self._list.addItem(item)
             if alias == active:
                 self._list.setCurrentItem(item)
@@ -546,7 +546,7 @@ class ProfilePage(QWidget):
 
     def _selected_alias(self):
         it = self._list.currentItem()
-        return it.data(Qt.UserRole) if it else None
+        return it.data(Qt.ItemDataRole.UserRole) if it else None
 
     def _set_active(self):
         alias = self._selected_alias()
@@ -557,7 +557,7 @@ class ProfilePage(QWidget):
 
     def _new(self):
         dlg = ProfileForm(self)
-        if dlg.exec_():
+        if dlg.exec():
             p = dlg.result_profile()
             self.state.save_profile(p, make_active=True)
             self._refresh()
@@ -575,7 +575,7 @@ class ProfilePage(QWidget):
             return
         dlg = ProfileForm(self, existing=existing)
         dlg._editing = existing          # preserve created timestamp on save
-        if dlg.exec_():
+        if dlg.exec():
             p = dlg.result_profile()
             was_active = (self.state.active_profile and
                           self.state.active_profile.alias == p.alias)
@@ -590,8 +590,8 @@ class ProfilePage(QWidget):
         if QMessageBox.question(
             self, "Delete profile",
             f"Delete profile '{alias}'? This cannot be undone.",
-            QMessageBox.Yes | QMessageBox.No, QMessageBox.No
-        ) == QMessageBox.Yes:
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No
+        ) == QMessageBox.StandardButton.Yes:
             self.state.delete_profile(alias)
             self._refresh()
             self.on_change()

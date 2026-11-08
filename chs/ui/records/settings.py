@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/settings.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/records/settings.py  (v1.0.1 — Sunday 8 November 2026)
 
 The Settings surface (set-once, low-traffic). Holds:
 
@@ -19,12 +19,12 @@ This page itself performs no network calls; it only records the opt-in and the
 endpoints.
 """
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QLineEdit,
     QComboBox, QCheckBox, QListWidget, QListWidgetItem, QMessageBox, QDialog,
     QPlainTextEdit,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT
 from data.models import SavedLocation
@@ -36,7 +36,7 @@ C = LIGHT
 
 def _lbl(t, size=15, muted=False, bold=False):
     l = QLabel(t)
-    l.setTextInteractionFlags(Qt.TextSelectableByMouse)
+    l.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     col = "#777777" if muted else C["text"]
     l.setStyleSheet(f"color:{col};font-size:{size}px;background:transparent;"
                     f"{'font-weight:bold;' if bold else ''}")
@@ -45,7 +45,7 @@ def _lbl(t, size=15, muted=False, bold=False):
 
 
 def _divider():
-    f = QFrame(); f.setFrameShape(QFrame.HLine); f.setFrameShadow(QFrame.Plain)
+    f = QFrame(); f.setFrameShape(QFrame.Shape.HLine); f.setFrameShadow(QFrame.Shadow.Plain)
     f.setStyleSheet(f"background:{C['border']};max-height:1px;border:none;margin:6px 0;")
     return f
 
@@ -125,7 +125,7 @@ class CitySearchDialog(QDialog):
             off = geo.offset_for_timezone(c["timezone"])
             item = QListWidgetItem(
                 f"{c['name']}, {c['country']}   ·   {c['timezone']}  (UTC{off:+g})")
-            item.setData(Qt.UserRole, c)
+            item.setData(Qt.ItemDataRole.UserRole, c)
             self._results.addItem(item)
 
     def _accept(self):
@@ -133,7 +133,7 @@ class CitySearchDialog(QDialog):
         if not it:
             QMessageBox.information(self, "No city selected", "Pick a city from the list.")
             return
-        self._picked = it.data(Qt.UserRole)
+        self._picked = it.data(Qt.ItemDataRole.UserRole)
         self.accept()
 
     def picked(self):
@@ -361,8 +361,8 @@ class SettingsPage(QWidget):
             f"{loc.timezone}  ·  UTC{off:+g} (today, DST-adjusted)\n\n"
             f"This updates the active profile’s current location. Your birth details, "
             f"including the UTC offset at birth, are not changed.",
-            QMessageBox.Yes | QMessageBox.No, QMessageBox.No
-        ) != QMessageBox.Yes:
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No
+        ) != QMessageBox.StandardButton.Yes:
             return
         self.state.apply_location_to_active(loc)
         self._after_location_change()
@@ -396,7 +396,7 @@ class SettingsPage(QWidget):
         if cur is None:
             return
         dlg = ManualLocationDialog(self, existing=cur)
-        if dlg.exec_() and dlg.result():
+        if dlg.exec() and dlg.result():
             self.state.apply_location_to_active(dlg.result())
             self._after_location_change()
 
@@ -405,7 +405,7 @@ class SettingsPage(QWidget):
                 self, "Clear current location",
                 "Clear the current location? The dashboard will use this computer's "
                 "clock and your birth latitude. Saved recents are kept.",
-                QMessageBox.Yes | QMessageBox.No, QMessageBox.No) != QMessageBox.Yes:
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
             return
         self.state.clear_current_location()
         self._after_location_change()
@@ -415,7 +415,7 @@ class SettingsPage(QWidget):
         if loc is None:
             return
         dlg = ManualLocationDialog(self, existing=loc)
-        if dlg.exec_() and dlg.result():
+        if dlg.exec() and dlg.result():
             self.state.update_saved_location(loc, dlg.result())
             self._after_location_change()
 
@@ -427,7 +427,7 @@ class SettingsPage(QWidget):
                 self, "Remove saved location",
                 f"Remove {loc.label} from your recent locations? Your current "
                 f"location is not changed.",
-                QMessageBox.Yes | QMessageBox.No, QMessageBox.No) != QMessageBox.Yes:
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
             return
         self.state.remove_saved_location(loc.label, loc.latitude, loc.longitude)
         self._after_location_change()
@@ -439,7 +439,7 @@ class SettingsPage(QWidget):
 
     def _find_city(self, filter_zone):
         dlg = CitySearchDialog(self, filter_zone=filter_zone)
-        if dlg.exec_() and dlg.picked():
+        if dlg.exec() and dlg.picked():
             c = dlg.picked()
             loc = SavedLocation(label=c["name"], latitude=c["lat"], longitude=c["lon"],
                                 timezone=c["timezone"], country=c["country"])
@@ -447,7 +447,7 @@ class SettingsPage(QWidget):
 
     def _manual(self):
         dlg = ManualLocationDialog(self)
-        if dlg.exec_() and dlg.result():
+        if dlg.exec() and dlg.result():
             self._confirm_and_apply(dlg.result())
 
     # --- space weather helpers -----------------------------------------------
@@ -497,7 +497,7 @@ class SettingsPage(QWidget):
         save.clicked.connect(_do)
         row.addWidget(cancel); row.addStretch(); row.addWidget(save)
         v.addLayout(row)
-        dlg.exec_()
+        dlg.exec()
 
     def _reset_endpoints(self):
         self.state.set_space_weather_endpoints(None)

@@ -1,6 +1,8 @@
-# Cosmic Scout — Python dependencies (v1.0.0 — Tuesday 3 November 2026)
-# Run from source:  python3 chs/main.py
+# Cosmic Scout — Python dependencies (v1.0.1 — Sunday 8 November 2026)
+# Run from source:  python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+#                   .venv/bin/python chs/main.py
+# PyQt6 6.11.0 matches the PyQt BaseApp 6.11 used by the Flatpak.
 # flatlib 0.2.3 is vendored in chs/flatlib/ (see chs/flatlib/VENDORED.txt); do not pip-install it.
-PyQt5==5.15.11
+PyQt6==6.11.0
 ephem==4.2.1
 pyswisseph==2.10.3.2

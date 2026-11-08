@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/natal_wheel.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/natal_wheel.py  (v1.0.1 — Sunday 8 November 2026)
 
 Drawn natal wheel (QPainter). A reusable, resize-aware QWidget that renders a
 computed chart: an element-coloured zodiac ring with sign glyphs, Placidus house
@@ -26,9 +26,9 @@ counter-clockwise convention.
 
 import math
 
-from PyQt5.QtWidgets import QWidget, QSizePolicy
-from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QBrush
-from PyQt5.QtCore import Qt, QRectF, QPointF, QSize
+from PyQt6.QtWidgets import QWidget, QSizePolicy
+from PyQt6.QtGui import QPainter, QPen, QColor, QFont, QBrush
+from PyQt6.QtCore import Qt, QRectF, QPointF, QSize
 
 from ui.theme import LIGHT
 
@@ -64,7 +64,7 @@ class NatalWheel(QWidget):
         super().__init__(parent)
         self._chart = chart
         self.setMinimumSize(340, 340)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
     def set_chart(self, chart):
         self._chart = chart
@@ -82,7 +82,7 @@ class NatalWheel(QWidget):
     def paintEvent(self, _ev):
         c = self._chart
         p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         w, h = self.width(), self.height()
         cx, cy = w / 2.0, h / 2.0
@@ -99,7 +99,7 @@ class NatalWheel(QWidget):
 
         if not c:
             p.setPen(QColor(LIGHT["subtle"]))
-            p.drawText(self.rect(), Qt.AlignCenter, "No chart")
+            p.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, "No chart")
             p.end()
             return
 
@@ -108,7 +108,7 @@ class NatalWheel(QWidget):
             rot = c["asc"]["lon"]
 
         # --- zodiac ring: tinted element sectors ---
-        p.setPen(Qt.NoPen)
+        p.setPen(Qt.PenStyle.NoPen)
         for i in range(12):
             col = QColor(ELEMENT_COLOR[SIGN_ELEMENTS[i]])
             col.setAlpha(45)
@@ -123,7 +123,7 @@ class NatalWheel(QWidget):
                              2 * r_sign_in, 2 * r_sign_in))
 
         # ring borders
-        p.setBrush(Qt.NoBrush)
+        p.setBrush(Qt.BrushStyle.NoBrush)
         p.setPen(QPen(QColor(LIGHT["border"]), 1))
         p.drawEllipse(QRectF(cx - r_sign_out, cy - r_sign_out, 2 * r_sign_out, 2 * r_sign_out))
         p.drawEllipse(QRectF(cx - r_sign_in, cy - r_sign_in, 2 * r_sign_in, 2 * r_sign_in))
@@ -140,7 +140,7 @@ class NatalWheel(QWidget):
             p.setFont(gf)
             p.setPen(QColor(ELEMENT_COLOR[SIGN_ELEMENTS[i]]))
             p.drawText(QRectF(g.x() - 13, g.y() - 13, 26, 26),
-                       Qt.AlignCenter, SIGN_GLYPHS[i])
+                       Qt.AlignmentFlag.AlignCenter, SIGN_GLYPHS[i])
 
         # --- house spokes (only when time is known) ---
         if c.get("time_known") and c.get("houses"):
@@ -161,7 +161,7 @@ class NatalWheel(QWidget):
                 pen = QPen(col)
                 pen.setWidth(1)
                 if asp["angle"] == 0:
-                    pen.setStyle(Qt.DotLine)
+                    pen.setStyle(Qt.PenStyle.DotLine)
                 p.setPen(pen)
                 p.drawLine(self._pt(cx, cy, r_inner, pos[asp["a"]], rot),
                            self._pt(cx, cy, r_inner, pos[asp["b"]], rot))
@@ -180,11 +180,11 @@ class NatalWheel(QWidget):
             p.setFont(pf)
             p.setPen(QColor(LIGHT["text"]))
             p.drawText(QRectF(g.x() - 13, g.y() - 13, 26, 26),
-                       Qt.AlignCenter, PLANET_GLYPH.get(pl["name"], pl["name"][:2]))
+                       Qt.AlignmentFlag.AlignCenter, PLANET_GLYPH.get(pl["name"], pl["name"][:2]))
             if pl.get("retro"):
                 p.setFont(rf)
                 p.setPen(QColor(LIGHT["neg"]))
                 p.drawText(QRectF(g.x() + 7, g.y() + 3, 16, 12),
-                           Qt.AlignLeft, "\u211E")
+                           Qt.AlignmentFlag.AlignLeft, "\u211E")
 
         p.end()

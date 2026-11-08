@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/journal.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/records/journal.py  (v1.0.1 — Sunday 8 November 2026)
 
 The daily log: the 12 canonical questions (data.models.DAILY_QUESTIONS), one
 entry per calendar day, plus history and CSV export. Feeds pattern_analysis:
@@ -18,12 +18,12 @@ All local. No network.
 import csv
 from datetime import date
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QDateEdit,
     QLineEdit, QScrollArea, QListWidget, QListWidgetItem, QButtonGroup,
     QFileDialog, QMessageBox, QSizePolicy,
 )
-from PyQt5.QtCore import Qt, QDate
+from PyQt6.QtCore import Qt, QDate
 
 from ui.theme import LIGHT
 from data.models import DAILY_QUESTIONS, DailyLog
@@ -36,7 +36,7 @@ _YES, _NO = True, False
 
 def _lbl(text, size=15, muted=False, bold=False):
     l = QLabel(text)
-    l.setTextInteractionFlags(Qt.TextSelectableByMouse)
+    l.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     col = "#777777" if muted else C["text"]
     weight = "font-weight:bold;" if bold else ""
     l.setStyleSheet(f"color:{col};font-size:{size}px;background:transparent;{weight}")
@@ -45,7 +45,7 @@ def _lbl(text, size=15, muted=False, bold=False):
 
 
 def _divider():
-    f = QFrame(); f.setFrameShape(QFrame.HLine); f.setFrameShadow(QFrame.Plain)
+    f = QFrame(); f.setFrameShape(QFrame.Shape.HLine); f.setFrameShadow(QFrame.Shadow.Plain)
     f.setStyleSheet(f"background:{C['border']};max-height:1px;border:none;margin:2px 0;")
     return f
 
@@ -60,14 +60,14 @@ class _QuestionRow(QWidget):
 
         text = q.text + ("   (adverse if yes)" if q.negative else "")
         lbl = _lbl(text, size=14)
-        lbl.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         lay.addWidget(lbl, 1)
 
         self.group = QButtonGroup(self); self.group.setExclusive(True)
         self._btns = {}
         for val, name in ((_YES, "Yes"), (_NO, "No")):
             b = QPushButton(name); b.setCheckable(True); b.setFixedSize(56, 28)
-            b.setCursor(Qt.PointingHandCursor); b.setStyleSheet(self._css())
+            b.setCursor(Qt.CursorShape.PointingHandCursor); b.setStyleSheet(self._css())
             self.group.addButton(b)
             self._btns[val] = b
             lay.addWidget(b)
@@ -152,7 +152,7 @@ class JournalPage(QWidget):
         qlay.addStretch(1)
 
         scroll = QScrollArea(); scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.NoFrame); scroll.setWidget(qwrap)
+        scroll.setFrameShape(QFrame.Shape.NoFrame); scroll.setWidget(qwrap)
         scroll.setStyleSheet("QScrollArea{background:transparent;}")
         body.addWidget(scroll, 2)
 
@@ -174,7 +174,7 @@ class JournalPage(QWidget):
 
         # buttons
         brow = QHBoxLayout()
-        save = QPushButton("Save entry"); save.setCursor(Qt.PointingHandCursor)
+        save = QPushButton("Save entry"); save.setCursor(Qt.CursorShape.PointingHandCursor)
         save.setStyleSheet(self._primary_css()); save.clicked.connect(self._save)
         clear = QPushButton("Clear answers"); clear.setStyleSheet(self._plain_css())
         clear.clicked.connect(self._clear)
@@ -249,11 +249,11 @@ class JournalPage(QWidget):
             log = store.load_log(alias, iso)
             score = f"{log.positive_score():.2f}" if (log and log.answers) else "—"
             item = QListWidgetItem(f"{iso}    score {score}")
-            item.setData(Qt.UserRole, iso)
+            item.setData(Qt.ItemDataRole.UserRole, iso)
             self._history.addItem(item)
 
     def _pick_history(self, item):
-        iso = item.data(Qt.UserRole)
+        iso = item.data(Qt.ItemDataRole.UserRole)
         y, m, d = (int(x) for x in iso.split("-"))
         self._date.setDate(QDate(y, m, d))     # triggers _load_for_date
 

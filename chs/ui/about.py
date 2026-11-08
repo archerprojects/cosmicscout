@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/about.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — ui/about.py  (v1.0.1 — Sunday 8 November 2026)
 
 The evidence spine made visible: how the app decides what to show and how it
 labels it (the name-the-channel test), the badge legend, and a citations registry
@@ -9,14 +9,14 @@ standard disclaimers, licence, version and developer.
 Pure content: no profile, no compute, no network. Light theme.
 """
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea,
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 
 
 def _card():
@@ -34,8 +34,8 @@ def _h(text):
 
 def _p(text, muted=False, size=14):
     q = QLabel(text)
-    q.setTextInteractionFlags(Qt.TextSelectableByMouse); q.setWordWrap(True)
-    q.setTextInteractionFlags(Qt.TextBrowserInteraction)
+    q.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse); q.setWordWrap(True)
+    q.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
     q.setOpenExternalLinks(True)
     q.setStyleSheet("font-size:%dpx;color:%s;" % (size, LIGHT["subtle"] if muted else LIGHT["text"]))
     return q
@@ -52,7 +52,7 @@ def _badge_chip(name):
 def build_page():
     page = QWidget()
     outer = QVBoxLayout(page); outer.setContentsMargins(0, 0, 0, 0)
-    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.NoFrame)
+    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
     body = QWidget(); lay = QVBoxLayout(body)
     lay.setContentsMargins(32, 28, 32, 28); lay.setSpacing(16)
@@ -100,8 +100,8 @@ def build_page():
     ]
     for name, meaning in legend:
         row = QHBoxLayout(); row.setSpacing(10)
-        chip = _badge_chip(name); chip.setMinimumWidth(112); chip.setAlignment(Qt.AlignCenter)
-        row.addWidget(chip, 0, Qt.AlignTop)
+        chip = _badge_chip(name); chip.setMinimumWidth(112); chip.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        row.addWidget(chip, 0, Qt.AlignmentFlag.AlignTop)
         row.addWidget(_p(meaning), 1)
         l2.addLayout(row)
     lay.addWidget(c2)

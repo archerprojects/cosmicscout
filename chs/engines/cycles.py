@@ -1,6 +1,6 @@
 """
 Cosmic Scout — Composite Cycle Engine
-cycles.py  (v1.0.0 — Tuesday 3 November 2026)
+cycles.py  (v1.0.1 — Sunday 8 November 2026)
 
 Every value shown on the dashboard is computed here from the user's profile
 (wake time, date, latitude) plus the ephemeris. No cycle is assumed from a

@@ -1,6 +1,6 @@
 # Cosmic Scout
 
-*Version 1.0.0 — Tuesday 3 November 2026*
+*Version 1.0.1 — Sunday 8 November 2026*
 
 A personal astrology and chronobiology desktop application for Linux (Flatpak).
 Cosmic Scout computes profile-driven cycle guidance — it is a calculator, not a
@@ -41,29 +41,30 @@ weather, off by default).
 ## Run from source
 
 ```bash
-pip install -r requirements.txt
-python3 chs/main.py
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python chs/main.py
 ```
 
 ## Build (Flatpak)
 
-A ready-built bundle, `CosmicScout-1.0.0-x86_64.flatpak`, is attached to the 1.0.0
+A ready-built bundle, `CosmicScout-1.0.1-x86_64.flatpak`, is attached to the 1.0.1
 release on GitHub. Install it with:
 
 ```bash
-flatpak install --user CosmicScout-1.0.0-x86_64.flatpak
+flatpak install --user CosmicScout-1.0.1-x86_64.flatpak
 flatpak run org.cosmicscout.app
 ```
 
-It uses the KDE 5.15-24.08 runtime, which Flathub marks end-of-life; Flatpak fetches
-it from Flathub on install. Release 1.0.1 moves Cosmic Scout to PyQt6 on the KDE 6.11
-runtime. To build the bundle yourself:
+It uses PyQt6 on the KDE 6.11 runtime (Python 3.13), native on Wayland with X11 as a
+fallback; Flatpak fetches the runtime from Flathub on install. To build the bundle
+yourself (the SDK and PyQt BaseApp install system-wide):
 
 ```bash
-flatpak-builder --user --install-deps-from=flathub --force-clean \
+flatpak-builder --install-deps-from=flathub --force-clean \
     --repo=repo --default-branch=stable build-dir flatpak/org.cosmicscout.app.yml
 flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
-    repo CosmicScout-1.0.0-x86_64.flatpak org.cosmicscout.app stable
+    repo CosmicScout-1.0.1-x86_64.flatpak org.cosmicscout.app stable
 ```
 
 ## Licence

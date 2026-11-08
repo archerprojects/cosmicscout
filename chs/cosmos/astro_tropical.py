@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_tropical.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — cosmos/astro_tropical.py  (v1.0.1 — Sunday 8 November 2026)
 
 The season-anchored (tropical) zodiac and the honest science that sits under it.
 User-facing label: "Tropical Zodiac". Everything keyed to the profile is computed
@@ -278,12 +278,12 @@ def _deg(signlon):
 
 
 def build_page(state):
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea,
         QGridLayout, QPushButton, QSizePolicy,
     )
-    from PyQt5.QtGui import QDesktopServices
-    from PyQt5.QtCore import Qt, QUrl
+    from PyQt6.QtGui import QDesktopServices
+    from PyQt6.QtCore import Qt, QUrl
 
     from ui.theme import LIGHT, BADGE_COLORS_LIGHT
     from ui.natal_wheel import NatalWheel, ELEMENT_COLOR
@@ -320,7 +320,7 @@ def build_page(state):
 
     scroll = QScrollArea()
     scroll.setWidgetResizable(True)
-    scroll.setFrameShape(QFrame.NoFrame)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
 
     body = QWidget()
@@ -375,7 +375,7 @@ def build_page(state):
         cl.setSpacing(16)
         gl = QLabel(glyph)
         gl.setStyleSheet("font-size:38px;color:%s;" % ELEMENT_COLOR[elem])
-        cl.addWidget(gl, 0, Qt.AlignTop)
+        cl.addWidget(gl, 0, Qt.AlignmentFlag.AlignTop)
         txt = QVBoxLayout()
         txt.setSpacing(2)
         name = QLabel("Sun in %s" % sign_name)
@@ -472,7 +472,7 @@ def build_page(state):
                 adg.setStyleSheet("font-size:12px;color:%s;" % LIGHT["subtle"])
                 grid.addWidget(adg, base + k, 3)
         grid.setRowStretch(grid.rowCount(), 1)
-        grid_wrap.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        grid_wrap.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         wheel_row.addWidget(grid_wrap, 2)
         ncl.addLayout(wheel_row)
     lay.addWidget(natal_card)
@@ -570,7 +570,7 @@ def build_page(state):
         for src in state.tropical_sources():
             b = QPushButton("%s  \u2197" % src["name"])
             b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             url = src["url"]
             b.clicked.connect(lambda _=False, u=url: QDesktopServices.openUrl(QUrl(u)))
             links_box.addWidget(b)
@@ -578,7 +578,7 @@ def build_page(state):
     def open_editor():
         from cosmos._sources_dialog import SourcesDialog
         dlg = SourcesDialog(state, page)
-        if dlg.exec_():
+        if dlg.exec():
             render_links()
 
     edit_btn.clicked.connect(open_editor)

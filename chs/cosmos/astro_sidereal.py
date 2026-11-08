@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_sidereal.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — cosmos/astro_sidereal.py  (v1.0.1 — Sunday 8 November 2026)
 
 Vedic (sidereal) astrology. The sidereal zodiac is fixed to the actual stars, not
 the seasons, so it sits ~24 degrees behind the tropical zodiac (the ayanamsha).
@@ -103,12 +103,12 @@ def _deg(signlon):
 
 
 def build_page(state):
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QScrollArea, QGridLayout,
         QPushButton, QSizePolicy,
     )
-    from PyQt5.QtGui import QDesktopServices
-    from PyQt5.QtCore import Qt, QUrl
+    from PyQt6.QtGui import QDesktopServices
+    from PyQt6.QtCore import Qt, QUrl
     from ui.theme import LIGHT, BADGE_COLORS_LIGHT
     from ui.natal_wheel import NatalWheel, ELEMENT_COLOR, PLANET_GLYPH
 
@@ -134,7 +134,7 @@ def build_page(state):
 
     page = QWidget()
     outer = QVBoxLayout(page); outer.setContentsMargins(0, 0, 0, 0)
-    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.NoFrame)
+    scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.Shape.NoFrame)
     outer.addWidget(scroll)
     body = QWidget(); lay = QVBoxLayout(body)
     lay.setContentsMargins(32, 28, 32, 28); lay.setSpacing(16)
@@ -232,7 +232,7 @@ def build_page(state):
             rl = QLabel("\u211E"); rl.setStyleSheet("font-size:12px;color:%s;" % LIGHT["neg"])
             grid.addWidget(rl, ri, 4)
     grid.setRowStretch(grid.rowCount(), 1)
-    grid_wrap.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+    grid_wrap.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
     row.addWidget(grid_wrap, 2)
     c3l.addLayout(row)
     lay.addWidget(c3)
@@ -267,13 +267,13 @@ def build_page(state):
                 w.deleteLater()
         for src in state.sidereal_sources():
             b = QPushButton("%s  \u2197" % src["name"]); b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.PointingHandCursor)
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
             b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
             links_box.addWidget(b)
 
     def open_editor():
         from cosmos._sources_dialog import SourcesDialog
-        if SourcesDialog(state, page, sources_key="sidereal").exec_():
+        if SourcesDialog(state, page, sources_key="sidereal").exec():
             render_links()
 
     edit_btn.clicked.connect(open_editor)

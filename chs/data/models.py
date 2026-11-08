@@ -1,5 +1,5 @@
 """
-Cosmic Scout — data/models.py  (v1.0.0 — Tuesday 3 November 2026)
+Cosmic Scout — data/models.py  (v1.0.1 — Sunday 8 November 2026)
 
 Local data structures. Privacy rule (unchanged): store only what a calculation
 needs, nothing else. No full name, city, email, device id, or analytics.
