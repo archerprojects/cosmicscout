@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/cycles_pages.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/cycles_pages.py  (v1.1.0 — Monday 9 November 2026)
 
 The Cycles wing: the "why" behind every bar on the dashboard. It reads the same
 composite cycle engine the dashboard uses (engines.cycles.day_cycles) and lays

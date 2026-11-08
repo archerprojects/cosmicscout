@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/journal.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/records/journal.py  (v1.1.0 — Monday 9 November 2026)
 
 The daily log: the 12 canonical questions (data.models.DAILY_QUESTIONS), one
 entry per calendar day, plus history and CSV export. Feeds pattern_analysis:

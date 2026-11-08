@@ -1,5 +1,5 @@
 """
-Cosmic Scout — engines/lunar_calendar.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — engines/lunar_calendar.py  (v1.1.0 — Monday 9 November 2026)
 
 The lunisolar (Chinese) calendar engine. Pure compute, no Qt — so both the UI
 (profile dialog, Moon & Sky page) AND any future correlation code can align on

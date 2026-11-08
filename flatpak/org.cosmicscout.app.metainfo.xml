@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Cosmic Scout — AppStream metainfo (v1.0.1 — Sunday 8 November 2026) -->
+<!-- Cosmic Scout — AppStream metainfo (v1.1.0 — Monday 9 November 2026) -->
 <component type="desktop-application">
   <id>org.cosmicscout.app</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -12,7 +12,8 @@
       person's day, week and month — circadian, ultradian, seasonal and lunar —
       alongside a Cosmos wing of astrological and earth traditions. It grades
       everything it shows by whether a channel of influence can be named and
-      traced, and it runs entirely offline except for one clearly opt-in feature.
+      traced, and it runs entirely offline except for one clearly opt-in feature
+      and the Cosmos link checks you start yourself.
     </p>
     <p>
       City lookup uses data derived from GeoNames (geonames.org), licensed
@@ -36,6 +37,13 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.1.0" date="2026-11-09">
+      <description>
+        <p>Cosmos Further Reading links on every tab, including Moon and Sky. Links
+           are saved with each profile; add and delete freely. Check links tests
+           each site on request and marks it confirmed, refused or unreachable.</p>
+      </description>
+    </release>
     <release version="1.0.1" date="2026-11-08">
       <description>
         <p>Runtime update: PyQt6 on the KDE 6.11 runtime with Python 3.13. Runs

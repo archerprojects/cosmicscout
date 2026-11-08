@@ -1,5 +1,5 @@
 """
-Cosmic Scout — theme.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — theme.py  (v1.1.0 — Monday 9 November 2026)
 
 Two palettes, deliberately. The main app is LIGHT (the canonical #f8f8f6 series
 carried from every prior version). The dashboard is a single dark "cockpit"

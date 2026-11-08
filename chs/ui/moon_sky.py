@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/moon_sky.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/moon_sky.py  (v1.1.0 — Monday 9 November 2026)
 
 Moon & Sky page (Cosmos wing). Presents the astronomy engine: current moon phase
 with a drawn phase disc, upcoming phases, this month's traditional full-moon name,
@@ -20,6 +20,9 @@ from PyQt6.QtCore import Qt, QRectF, QSize
 
 from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 from engines import astronomy as A
+from cosmos._links_section import build_links_card
+
+_LINKS_NOTE = "Opens in your browser \u2014 yours to change, replace, or add to."
 
 _DARK = "#3a3f52"
 _LIT = "#f7f4e6"
@@ -258,5 +261,6 @@ def build_page(state):
                 c5l.addWidget(na)
             lay.addWidget(c5)
 
+    lay.addWidget(build_links_card(state, page, "moon_sky", card, _LINKS_NOTE))
     lay.addStretch(1)
     return page

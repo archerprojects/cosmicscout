@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/trad_earth.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — cosmos/trad_earth.py  (v1.1.0 — Monday 9 November 2026)
 
 Earth Traditions — a set of birth-sign systems from around the world, each carried
 on its own terms with honest provenance. Every section states plainly what it is:
@@ -32,6 +32,9 @@ from datetime import date
 
 from cosmos.astro_tropical import sun_sign
 from cosmos.astro_shengxiao import animal_for_year
+from cosmos._links_section import build_links_card
+
+_LINKS_NOTE = "Opens in your browser \u2014 yours to change, replace, or add to."
 
 _ORDER = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
           "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
@@ -262,7 +265,7 @@ def build_page(state):
         m = QLabel("No profile yet. Create one in Records \u2192 Profile to read your date "
                    "into these traditions.")
         m.setWordWrap(True); m.setStyleSheet("color:%s;font-size:12px;" % LIGHT["text"])
-        cl.addWidget(m); lay.addWidget(c); lay.addStretch(1); return page
+        cl.addWidget(m); lay.addWidget(c); lay.addWidget(build_links_card(state, page, "trad_earth", card, _LINKS_NOTE)); lay.addStretch(1); return page
 
     bd = profile.birth_date
     ss = sun_sign(bd)
@@ -332,37 +335,6 @@ def build_page(state):
             "Western numerology's 9-year cycle (birth month + day + current year, "
             "reduced)."))
 
-    # --- editable out-links ---
-    c5 = card(); c5l = QVBoxLayout(c5); c5l.setContentsMargins(20, 16, 20, 18); c5l.setSpacing(10)
-    hr = QHBoxLayout()
-    t5 = QLabel("Further Reading"); t5.setStyleSheet("font-size:14px;font-weight:bold;color:%s;" % LIGHT["text"])
-    hr.addWidget(t5); hr.addStretch(1)
-    edit_btn = QPushButton("Edit sources"); hr.addWidget(edit_btn)
-    c5l.addLayout(hr)
-    n5 = QLabel("Opens in your browser \u2014 yours to change, replace, or add to.")
-    n5.setWordWrap(True); n5.setStyleSheet("font-size:11px;color:%s;" % LIGHT["subtle"])
-    c5l.addWidget(n5)
-    links_box = QVBoxLayout(); links_box.setSpacing(6); c5l.addLayout(links_box)
-
-    def render_links():
-        while links_box.count():
-            it = links_box.takeAt(0); w = it.widget()
-            if w:
-                w.deleteLater()
-        for src in state.trad_earth_sources():
-            b = QPushButton("%s  \u2197" % src["name"]); b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.CursorShape.PointingHandCursor)
-            b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
-            links_box.addWidget(b)
-
-    def open_editor():
-        from cosmos._sources_dialog import SourcesDialog
-        if SourcesDialog(state, page, sources_key="trad_earth").exec():
-            render_links()
-
-    edit_btn.clicked.connect(open_editor)
-    render_links()
-    lay.addWidget(c5)
-
+    lay.addWidget(build_links_card(state, page, "trad_earth", card, _LINKS_NOTE))
     lay.addStretch(1)
     return page

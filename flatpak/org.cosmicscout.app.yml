@@ -1,4 +1,4 @@
-# Cosmic Scout — Flatpak manifest (v1.0.1 — Sunday 8 November 2026)
+# Cosmic Scout — Flatpak manifest (v1.1.0 — Monday 9 November 2026)
 #
 # Runtime: KDE 6.11 + PyQt BaseApp 6.11 (PyQt6 6.11.0, Python 3.13). Wayland
 # native, X11 only as a fallback. flatlib is VENDORED into chs/flatlib (see

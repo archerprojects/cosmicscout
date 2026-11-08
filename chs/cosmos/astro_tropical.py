@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_tropical.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — cosmos/astro_tropical.py  (v1.1.0 — Monday 9 November 2026)
 
 The season-anchored (tropical) zodiac and the honest science that sits under it.
 User-facing label: "Tropical Zodiac". Everything keyed to the profile is computed
@@ -25,6 +25,9 @@ page and draws the wheel via ui.natal_wheel.NatalWheel.
 """
 
 from datetime import date, timedelta
+from cosmos._links_section import build_links_card
+
+_LINKS_NOTE = "Three contrasting voices \u2014 these open in your browser and are yours to change."
 
 # ---------------------------------------------------------------------------
 # Sign reference (tropical). element, modality, glyph, ruling planet, traits.
@@ -262,13 +265,6 @@ def natal_chart(profile):
 # ===========================================================================
 # UI
 # ===========================================================================
-DEFAULT_SOURCES = [
-    {"name": "Cainer", "url": "https://www.cainer.com/daily-horoscope/"},
-    {"name": "Free Will Astrology \u2014 Rob Brezsny", "url": "https://freewillastrology.com/"},
-    {"name": "Astrology Zone \u2014 Susan Miller", "url": "https://www.astrologyzone.com/"},
-]
-
-
 def _deg(signlon):
     dd = int(signlon)
     mm = int(round((signlon - dd) * 60))
@@ -353,6 +349,7 @@ def build_page(state):
         msg.setStyleSheet("color:%s;font-size:12px;" % LIGHT["text"])
         el.addWidget(msg)
         lay.addWidget(empty)
+        lay.addWidget(build_links_card(state, page, "tropical", card, _LINKS_NOTE))
         lay.addStretch(1)
         return page
 
@@ -538,52 +535,6 @@ def build_page(state):
             c4l.addWidget(row)
         lay.addWidget(c4)
 
-    # --- Further reading (editable out-links) ---
-    c5 = card()
-    c5l = QVBoxLayout(c5)
-    c5l.setContentsMargins(20, 16, 20, 18)
-    c5l.setSpacing(10)
-    head5 = QHBoxLayout()
-    h5 = QLabel("Further Reading")
-    h5.setStyleSheet("font-size:14px;font-weight:bold;color:%s;" % LIGHT["text"])
-    head5.addWidget(h5)
-    head5.addStretch(1)
-    edit_btn = QPushButton("Edit sources")
-    head5.addWidget(edit_btn)
-    c5l.addLayout(head5)
-    note5 = QLabel("Three contrasting voices \u2014 these open in your browser and are "
-                   "yours to change.")
-    note5.setWordWrap(True)
-    note5.setStyleSheet("font-size:11px;color:%s;" % LIGHT["subtle"])
-    c5l.addWidget(note5)
-
-    links_box = QVBoxLayout()
-    links_box.setSpacing(6)
-    c5l.addLayout(links_box)
-
-    def render_links():
-        while links_box.count():
-            item = links_box.takeAt(0)
-            w = item.widget()
-            if w:
-                w.deleteLater()
-        for src in state.tropical_sources():
-            b = QPushButton("%s  \u2197" % src["name"])
-            b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.CursorShape.PointingHandCursor)
-            url = src["url"]
-            b.clicked.connect(lambda _=False, u=url: QDesktopServices.openUrl(QUrl(u)))
-            links_box.addWidget(b)
-
-    def open_editor():
-        from cosmos._sources_dialog import SourcesDialog
-        dlg = SourcesDialog(state, page)
-        if dlg.exec():
-            render_links()
-
-    edit_btn.clicked.connect(open_editor)
-    render_links()
-    lay.addWidget(c5)
-
+    lay.addWidget(build_links_card(state, page, "tropical", card, _LINKS_NOTE))
     lay.addStretch(1)
     return page

@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_shengxiao.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — cosmos/astro_shengxiao.py  (v1.1.0 — Monday 9 November 2026)
 
 The twelve-animal system (Shengxiao) — a first-class, lived tradition, carried on
 its own terms and TRADITIONAL-badged (which means "presented on its own terms,"
@@ -23,6 +23,9 @@ light-themed page.
 """
 
 from datetime import date, datetime, timedelta
+from cosmos._links_section import build_links_card
+
+_LINKS_NOTE = "Opens in your browser \u2014 yours to change, replace, or add to."
 
 # Earthly Branches, in order. (pinyin, animal, fixed element)
 BRANCHES = [
@@ -253,6 +256,7 @@ def build_page(state):
         m.setStyleSheet("color:%s;font-size:12px;" % LIGHT["text"])
         el.addWidget(m)
         lay.addWidget(empty)
+        lay.addWidget(build_links_card(state, page, "shengxiao", card, _LINKS_NOTE))
         lay.addStretch(1)
         return page
 
@@ -264,6 +268,7 @@ def build_page(state):
         m = QLabel("Add a birth date to your profile to see your animal.")
         m.setStyleSheet("color:%s;" % LIGHT["text"])
         lay.addWidget(m)
+        lay.addWidget(build_links_card(state, page, "shengxiao", card, _LINKS_NOTE))
         lay.addStretch(1)
         return page
 
@@ -370,50 +375,6 @@ def build_page(state):
     c4l.addWidget(note)
     lay.addWidget(c4)
 
-    # --- Further reading (editable out-links; shengxiao key) ---
-    c5 = card()
-    c5l = QVBoxLayout(c5)
-    c5l.setContentsMargins(20, 16, 20, 18)
-    c5l.setSpacing(10)
-    h5 = QHBoxLayout()
-    t5 = QLabel("Further Reading")
-    t5.setStyleSheet("font-size:14px;font-weight:bold;color:%s;" % LIGHT["text"])
-    h5.addWidget(t5)
-    h5.addStretch(1)
-    edit_btn = QPushButton("Edit sources")
-    h5.addWidget(edit_btn)
-    c5l.addLayout(h5)
-    n5 = QLabel("Opens in your browser \u2014 yours to change, replace, or add to.")
-    n5.setWordWrap(True)
-    n5.setStyleSheet("font-size:11px;color:%s;" % LIGHT["subtle"])
-    c5l.addWidget(n5)
-
-    links_box = QVBoxLayout()
-    links_box.setSpacing(6)
-    c5l.addLayout(links_box)
-
-    def render_links():
-        while links_box.count():
-            it = links_box.takeAt(0)
-            w = it.widget()
-            if w:
-                w.deleteLater()
-        for src in state.shengxiao_sources():
-            b = QPushButton("%s  \u2197" % src["name"])
-            b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.CursorShape.PointingHandCursor)
-            b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
-            links_box.addWidget(b)
-
-    def open_editor():
-        from cosmos._sources_dialog import SourcesDialog
-        dlg = SourcesDialog(state, page, sources_key="shengxiao")
-        if dlg.exec():
-            render_links()
-
-    edit_btn.clicked.connect(open_editor)
-    render_links()
-    lay.addWidget(c5)
-
+    lay.addWidget(build_links_card(state, page, "shengxiao", card, _LINKS_NOTE))
     lay.addStretch(1)
     return page

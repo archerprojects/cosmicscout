@@ -1,5 +1,5 @@
 """
-Cosmic Scout — engines/space_weather.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — engines/space_weather.py  (v1.1.0 — Monday 9 November 2026)
 
 The app's ONLY network feature, off by default, behind an explicit opt-in in
 Settings. Source: NOAA SWPC public JSON (keyless, no account). Endpoints are

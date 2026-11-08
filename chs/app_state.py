@@ -1,5 +1,5 @@
 """
-Cosmic Scout — app_state.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — app_state.py  (v1.1.0 — Monday 9 November 2026)
 
 App-wide state: the active profile, the dashboard scale, and settings
 (including the space-weather network opt-in). One source of truth; the
@@ -13,6 +13,7 @@ from typing import Optional, List
 from data import store
 from data.models import Profile, SavedLocation
 from data import geo
+from cosmos import links as cosmos_links
 
 
 class AppState:
@@ -20,6 +21,7 @@ class AppState:
         self.settings: dict = store.load_settings()
         self.active_profile: Optional[Profile] = None
         self.scale: str = self.settings.get("scale", "Day")
+        self._migrate_shared_links()
 
     # --- startup ------------------------------------------------------------
     def load_last_profile(self):
@@ -170,68 +172,70 @@ class AppState:
         self.settings["space_weather_endpoints"] = endpoints
         store.save_settings(self.settings)
 
-    # --- Tropical wing out-links (user-editable; seeded with three defaults) --
-    def tropical_sources(self) -> list:
-        return list(self.settings.get("tropical_sources") or [])
+    # --- Cosmos Further Reading links (per profile) ----------------------------
+    # A tab the profile has never edited follows the shipped defaults
+    # (cosmos/links.py); check results are kept per URL, apart from the lists,
+    # so checking never freezes a tab's defaults.
+    def links_editable(self) -> bool:
+        return self.active_profile is not None
 
-    def set_tropical_sources(self, sources: list):
-        self.settings["tropical_sources"] = list(sources)
-        store.save_settings(self.settings)
+    def links(self, key: str) -> list:
+        p = self.active_profile
+        if p is not None and key in p.cosmos_links:
+            return [dict(x) for x in p.cosmos_links[key]]
+        return cosmos_links.defaults(key)
 
-    def reset_tropical_sources(self):
-        self.settings["tropical_sources"] = list(
-            store.DEFAULT_SETTINGS["tropical_sources"])
-        store.save_settings(self.settings)
+    def links_customised(self, key: str) -> bool:
+        p = self.active_profile
+        return p is not None and key in p.cosmos_links
 
-    # --- Twelve-Animals out-links (user-editable; seeded default) -------------
-    def shengxiao_sources(self) -> list:
-        return list(self.settings.get("shengxiao_sources") or [])
+    def set_links(self, key: str, items: list):
+        p = self.active_profile
+        if p is None:
+            return
+        p.cosmos_links[key] = [{"name": x["name"], "url": x["url"]} for x in items]
+        store.save_profile(p)
 
-    def set_shengxiao_sources(self, sources: list):
-        self.settings["shengxiao_sources"] = list(sources)
-        store.save_settings(self.settings)
+    def reset_links(self, key: str):
+        p = self.active_profile
+        if p is None:
+            return
+        p.cosmos_links.pop(key, None)
+        store.save_profile(p)
 
-    def reset_shengxiao_sources(self):
-        self.settings["shengxiao_sources"] = list(
-            store.DEFAULT_SETTINGS["shengxiao_sources"])
-        store.save_settings(self.settings)
+    def link_check(self, url: str) -> dict:
+        p = self.active_profile
+        return dict(p.cosmos_link_checks.get(url, {})) if p is not None else {}
 
-    # --- BaZi out-links --------------------------------------------------------
-    def bazi_sources(self) -> list:
-        return list(self.settings.get("bazi_sources") or [])
+    def record_link_checks(self, results: dict):
+        """results: url -> status, from cosmos.links.LinkChecker."""
+        p = self.active_profile
+        if p is None:
+            return
+        day = cosmos_links.today()
+        for url, status in results.items():
+            p.cosmos_link_checks[url] = {"status": status, "checked": day}
+        store.save_profile(p)
 
-    def set_bazi_sources(self, sources: list):
-        self.settings["bazi_sources"] = list(sources)
-        store.save_settings(self.settings)
-
-    def reset_bazi_sources(self):
-        self.settings["bazi_sources"] = list(store.DEFAULT_SETTINGS["bazi_sources"])
-        store.save_settings(self.settings)
-
-    # --- Earth-Traditions out-links -------------------------------------------
-    def trad_earth_sources(self) -> list:
-        return list(self.settings.get("trad_earth_sources") or [])
-
-    def set_trad_earth_sources(self, sources: list):
-        self.settings["trad_earth_sources"] = list(sources)
-        store.save_settings(self.settings)
-
-    def reset_trad_earth_sources(self):
-        self.settings["trad_earth_sources"] = list(
-            store.DEFAULT_SETTINGS["trad_earth_sources"])
-        store.save_settings(self.settings)
-
-    # --- Vedic/sidereal out-links ---------------------------------------------
-    def sidereal_sources(self) -> list:
-        return list(self.settings.get("sidereal_sources") or [])
-
-    def set_sidereal_sources(self, sources: list):
-        self.settings["sidereal_sources"] = list(sources)
-        store.save_settings(self.settings)
-
-    def reset_sidereal_sources(self):
-        self.settings["sidereal_sources"] = list(
-            store.DEFAULT_SETTINGS["sidereal_sources"])
+    def _migrate_shared_links(self):
+        """1.0.x kept one shared list per tab in settings (<tab>_sources). Copy any
+        list that differs from the shipped default into every profile that has no
+        entry for that tab, then drop the shared keys. Runs once; a no-op after."""
+        keys = [k for k in list(self.settings) if k.endswith("_sources")]
+        if not keys:
+            return
+        aliases = store.list_profiles()
+        for skey in keys:
+            tab = skey[:-len("_sources")]
+            items = [{"name": x.get("name", ""), "url": x.get("url", "")}
+                     for x in (self.settings.get(skey) or [])]
+            if items and items != cosmos_links.defaults(tab):
+                for alias in aliases:
+                    prof = store.load_profile(alias)
+                    if prof is not None and tab not in prof.cosmos_links:
+                        prof.cosmos_links[tab] = items
+                        store.save_profile(prof)
+            self.settings.pop(skey, None)
         store.save_settings(self.settings)
 
     def units(self) -> str:

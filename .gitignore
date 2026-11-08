@@ -1,4 +1,4 @@
-# Cosmic Scout — git ignore rules (v1.0.1 — Sunday 8 November 2026)
+# Cosmic Scout — git ignore rules (v1.1.0 — Monday 9 November 2026)
 # Python
 __pycache__/
 *.py[cod]

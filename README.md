@@ -1,6 +1,6 @@
 # Cosmic Scout
 
-*Version 1.0.1 — Sunday 8 November 2026*
+*Version 1.1.0 — Monday 9 November 2026*
 
 A personal astrology and chronobiology desktop application for Linux (Flatpak).
 Cosmic Scout computes profile-driven cycle guidance — it is a calculator, not a
@@ -20,7 +20,7 @@ channel of influence be named and traced?*
 ## Architecture
 
 Cosmic Scout runs entirely offline except for one opt-in feature (NOAA space
-weather, off by default).
+weather, off by default) and the Cosmos link checks you start yourself.
 
 - **Dashboard** — the dark guidance cockpit. *Today's Window* blends only the
   validated tier (circadian + ultradian); below it, one diverging bar per cycle,
@@ -33,8 +33,9 @@ weather, off by default).
   discovery, both biased to silence) and *Settings* (current location from an
   offline city list, and the single network opt-in).
 - **Cosmos** — Moon & Sky, Tropical Zodiac (season-of-birth science and natal
-  chart), Shēngxiào, BaZi, Vedic and Earth Traditions, all computed locally,
-  with editable out-links.
+  chart), Shēngxiào, BaZi, Vedic and Earth Traditions, all computed locally.
+  Every tab ends with Further Reading links, saved with each profile: add or
+  delete your own, and press Check links to confirm each site still answers.
 - **About** — how we decide what's real: the name-the-channel test, the badge
   legend and cited sources.
 
@@ -48,11 +49,11 @@ python3 -m venv .venv
 
 ## Build (Flatpak)
 
-A ready-built bundle, `CosmicScout-1.0.1-x86_64.flatpak`, is attached to the 1.0.1
+A ready-built bundle, `CosmicScout-1.1.0-x86_64.flatpak`, is attached to the 1.1.0
 release on GitHub. Install it with:
 
 ```bash
-flatpak install --user CosmicScout-1.0.1-x86_64.flatpak
+flatpak install --user CosmicScout-1.1.0-x86_64.flatpak
 flatpak run org.cosmicscout.app
 ```
 
@@ -64,7 +65,7 @@ yourself (the SDK and PyQt BaseApp install system-wide):
 flatpak-builder --install-deps-from=flathub --force-clean \
     --repo=repo --default-branch=stable build-dir flatpak/org.cosmicscout.app.yml
 flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
-    repo CosmicScout-1.0.1-x86_64.flatpak org.cosmicscout.app stable
+    repo CosmicScout-1.1.0-x86_64.flatpak org.cosmicscout.app stable
 ```
 
 ## Licence

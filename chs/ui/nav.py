@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/nav.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/nav.py  (v1.1.0 — Monday 9 November 2026)
 
 Navigation shell pieces. WingPage renders a section that has its own sub-nav —
 Cosmos (the astro_* and trad_earth modules) and Records (Profile / Journal /

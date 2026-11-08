@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/natal_wheel.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/natal_wheel.py  (v1.1.0 — Monday 9 November 2026)
 
 Drawn natal wheel (QPainter). A reusable, resize-aware QWidget that renders a
 computed chart: an element-coloured zodiac ring with sign glyphs, Placidus house

@@ -1,6 +1,6 @@
 """
 Cosmic Scout — Composite Guidance Dashboard
-dashboard.py  (v1.0.1 — Sunday 8 November 2026)
+dashboard.py  (v1.1.0 — Monday 9 November 2026)
 
 v1.11: optional NOAA space-weather row (CONTESTED), fetched off-thread.
 v1.3: consumes a real data.models.Profile (attribute access), not a dict.

@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/profile_dialog.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/records/profile_dialog.py  (v1.1.0 — Monday 9 November 2026)
 
 The Records > Profile surface. Two parts:
 
@@ -470,6 +470,8 @@ class ProfileForm(QDialog):
             menstrual_cycle_start=mstart if self._mens.isChecked() else None,
             menstrual_avg_length=self._mlen.value(),
             created=(editing.created if editing else date.today().isoformat()),
+            cosmos_links=dict(prior.cosmos_links) if prior else {},
+            cosmos_link_checks=dict(prior.cosmos_link_checks) if prior else {},
         )
         self.accept()
 

@@ -1,5 +1,5 @@
 """
-Cosmic Scout — cosmos/astro_bazi.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — cosmos/astro_bazi.py  (v1.1.0 — Monday 9 November 2026)
 
 BaZi (八字) — the Four Pillars of Destiny. The peer of Shengxiao: same lived
 tradition, carried on its own terms and TRADITIONAL-badged. Pure date/time
@@ -29,6 +29,9 @@ minutes. That boundary caveat is surfaced on the page.
 from datetime import date, datetime, timedelta
 
 from cosmos.astro_shengxiao import BRANCHES, solar_year, is_li_chun_day   # (pinyin, animal, fixed_el), Li Chun year
+from cosmos._links_section import build_links_card
+
+_LINKS_NOTE = "Opens in your browser \u2014 yours to change, replace, or add to."
 
 STEMS = ["Jia", "Yi", "Bing", "Ding", "Wu", "Ji", "Geng", "Xin", "Ren", "Gui"]
 ELEMENTS = ["Wood", "Fire", "Earth", "Metal", "Water"]
@@ -266,12 +269,12 @@ def build_page(state):
         c = card(); cl = QVBoxLayout(c); cl.setContentsMargins(20, 24, 20, 24)
         m = QLabel("No profile yet. Create one in Records \u2192 Profile to cast your pillars.")
         m.setWordWrap(True); m.setStyleSheet("color:%s;font-size:12px;" % LIGHT["text"])
-        cl.addWidget(m); lay.addWidget(c); lay.addStretch(1); return page
+        cl.addWidget(m); lay.addWidget(c); lay.addWidget(build_links_card(state, page, "bazi", card, _LINKS_NOTE)); lay.addStretch(1); return page
 
     bz = four_pillars(profile)
     if bz is None:
         m = QLabel("Add a birth date to your profile to cast your pillars.")
-        m.setStyleSheet("color:%s;" % LIGHT["text"]); lay.addWidget(m); lay.addStretch(1); return page
+        m.setStyleSheet("color:%s;" % LIGHT["text"]); lay.addWidget(m); lay.addWidget(build_links_card(state, page, "bazi", card, _LINKS_NOTE)); lay.addStretch(1); return page
 
     # --- Four pillars grid ---
     c1 = card(); c1l = QVBoxLayout(c1); c1l.setContentsMargins(20, 16, 20, 18); c1l.setSpacing(10)
@@ -380,37 +383,6 @@ def build_page(state):
     c5l.addWidget(note)
     lay.addWidget(c5)
 
-    # --- Further Reading (editable out-links; bazi key) ---
-    c6 = card(); c6l = QVBoxLayout(c6); c6l.setContentsMargins(20, 16, 20, 18); c6l.setSpacing(10)
-    hr = QHBoxLayout()
-    t6 = QLabel("Further Reading"); t6.setStyleSheet("font-size:14px;font-weight:bold;color:%s;" % LIGHT["text"])
-    hr.addWidget(t6); hr.addStretch(1)
-    edit_btn = QPushButton("Edit sources"); hr.addWidget(edit_btn)
-    c6l.addLayout(hr)
-    n6 = QLabel("Opens in your browser \u2014 yours to change, replace, or add to.")
-    n6.setWordWrap(True); n6.setStyleSheet("font-size:11px;color:%s;" % LIGHT["subtle"])
-    c6l.addWidget(n6)
-    links_box = QVBoxLayout(); links_box.setSpacing(6); c6l.addLayout(links_box)
-
-    def render_links():
-        while links_box.count():
-            it = links_box.takeAt(0); w = it.widget()
-            if w:
-                w.deleteLater()
-        for src in state.bazi_sources():
-            b = QPushButton("%s  \u2197" % src["name"]); b.setStyleSheet("text-align:left;")
-            b.setCursor(Qt.CursorShape.PointingHandCursor)
-            b.clicked.connect(lambda _=False, u=src["url"]: QDesktopServices.openUrl(QUrl(u)))
-            links_box.addWidget(b)
-
-    def open_editor():
-        from cosmos._sources_dialog import SourcesDialog
-        if SourcesDialog(state, page, sources_key="bazi").exec():
-            render_links()
-
-    edit_btn.clicked.connect(open_editor)
-    render_links()
-    lay.addWidget(c6)
-
+    lay.addWidget(build_links_card(state, page, "bazi", card, _LINKS_NOTE))
     lay.addStretch(1)
     return page

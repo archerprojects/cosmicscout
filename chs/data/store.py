@@ -1,5 +1,5 @@
 """
-Cosmic Scout — data/store.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — data/store.py  (v1.1.0 — Monday 9 November 2026)
 
 Local JSON persistence under ~/.local/share/cosmicscout/. Zero network.
 The single write path for all app data: profiles, daily logs, settings.
@@ -9,6 +9,9 @@ Layout (ported from the proven v1 scheme):
         profiles/<alias>.json      one file per profile
         journal/<alias>/<date>.json  one file per daily log entry
         settings.json              last_alias, scale, space-weather opt-in, units
+
+Cosmos links live in each profile (Profile.cosmos_links); settings files from
+1.0.x carry shared <tab>_sources lists, which AppState migrates into profiles.
 
 Models stay pure (data/models.py); every disk touch goes through here.
 """
@@ -35,27 +38,6 @@ DEFAULT_SETTINGS = {
     "saved_locations": [],              # list of SavedLocation dicts (recents, newest-first)
     "location_on_dashboard": False,     # show the location control on the dashboard
     "last_seen_timezone": None,         # for detecting travel between sessions
-    "tropical_sources": [               # Tropical wing out-links (user-editable)
-        {"name": "Cainer", "url": "https://www.cainer.com/daily-horoscope/"},
-        {"name": "Free Will Astrology \u2014 Rob Brezsny", "url": "https://freewillastrology.com/"},
-        {"name": "Astrology Zone \u2014 Susan Miller", "url": "https://www.astrologyzone.com/"},
-    ],
-    "shengxiao_sources": [              # Twelve-Animals out-links (user-editable)
-        {"name": "China Highlights \u2014 Chinese Zodiac",
-         "url": "https://www.chinahighlights.com/travelguide/chinese-zodiac/"},
-    ],
-    "bazi_sources": [                  # BaZi Four-Pillars out-links (user-editable)
-        {"name": "Your Chinese Astrology \u2014 BaZi",
-         "url": "https://www.yourchineseastrology.com/calendar/bazi/"},
-    ],
-    "trad_earth_sources": [            # Earth-Traditions out-links (user-editable)
-        {"name": "Sun Bear Medicine Wheel \u2014 guide",
-         "url": "https://www.crystalvaults.com/medicine-wheel-guide/"},
-    ],
-    "sidereal_sources": [              # Vedic/sidereal out-links (user-editable)
-        {"name": "Drik Panchang \u2014 Janma Nakshatra",
-         "url": "https://www.drikpanchang.com/utilities/horoscope/hindu-birthstar-calculator.html"},
-    ],
 }
 
 

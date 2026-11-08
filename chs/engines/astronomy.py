@@ -1,5 +1,5 @@
 """
-Cosmic Scout — engines/astronomy.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — engines/astronomy.py  (v1.1.0 — Monday 9 November 2026)
 
 The Moon & Sky engine: moon phase, solar events, and approximate eclipse
 detection, all computed offline from ephem. VALIDATED — this is astronomy, not

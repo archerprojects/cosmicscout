@@ -1,4 +1,4 @@
-Cosmic Scout — hicolor icon tree (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — hicolor icon tree (v1.1.0 — Monday 9 November 2026)
 
 Source: source/org.cosmicscout.app-master.png (1024x1024 RGBA, Overwatch's
 cs_logo artwork). The eight sizes (16, 24, 32, 48, 64, 128, 256, 512) are

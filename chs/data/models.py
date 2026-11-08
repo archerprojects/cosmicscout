@@ -1,5 +1,5 @@
 """
-Cosmic Scout — data/models.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — data/models.py  (v1.1.0 — Monday 9 November 2026)
 
 Local data structures. Privacy rule (unchanged): store only what a calculation
 needs, nothing else. No full name, city, email, device id, or analytics.
@@ -42,6 +42,11 @@ class Profile:
     menstrual_cycle_start: Optional[str] = None   # ISO date of last cycle start
     menstrual_avg_length: int = 28
     created: str = field(default_factory=lambda: date.today().isoformat())
+    # Cosmos Further Reading links: only tabs the user has edited (tab key -> list of
+    # {name, url}); an untouched tab follows the shipped defaults (cosmos/links.py)
+    cosmos_links: Dict[str, list] = field(default_factory=dict)
+    # results of user-started link checks: url -> {status, checked}
+    cosmos_link_checks: Dict[str, dict] = field(default_factory=dict)
 
     def wake_hm(self):
         h, m = self.wake_time.split(":")

@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/about.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/about.py  (v1.1.0 — Monday 9 November 2026)
 
 The evidence spine made visible: how the app decides what to show and how it
 labels it (the name-the-channel test), the badge legend, and a citations registry
@@ -16,7 +16,7 @@ from PyQt6.QtCore import Qt
 
 from ui.theme import LIGHT, BADGE_COLORS_LIGHT
 
-APP_VERSION = "1.0.1"
+APP_VERSION = "1.1.0"
 
 
 def _card():
@@ -171,7 +171,8 @@ def build_page():
                     "files. If you switch on Space Weather (off by default), the app fetches "
                     "current readings from NOAA SWPC and shows them as a CONTESTED layer; "
                     "they never change the validated composite. Nothing else uses the "
-                    "network.",
+                    "network, except the link checks you start with Check links in "
+                    "Cosmos: they contact only the listed sites, and send no personal data.",
                     size=13))
     lay.addWidget(c4)
 

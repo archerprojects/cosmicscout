@@ -1,6 +1,6 @@
 # Cosmic Scout — Third-Party Licences
 
-*Version 1.0.1 — Sunday 8 November 2026*
+*Version 1.1.0 — Monday 9 November 2026*
 
 Cosmic Scout itself is licensed **GPL-3.0-or-later** (see `LICENSE`). It bundles or
 depends on the components below. Licences were checked against each project's own

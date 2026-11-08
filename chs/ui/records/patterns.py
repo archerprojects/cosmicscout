@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/patterns.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/records/patterns.py  (v1.1.0 — Monday 9 November 2026)
 
 The Records > Patterns surface. Two engines, both biased to silence:
 

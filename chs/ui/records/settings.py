@@ -1,5 +1,5 @@
 """
-Cosmic Scout — ui/records/settings.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — ui/records/settings.py  (v1.1.0 — Monday 9 November 2026)
 
 The Settings surface (set-once, low-traffic). Holds:
 
@@ -463,7 +463,8 @@ class SettingsPage(QWidget):
                 "and only your request is sent \u2014 no personal data. Everything else "
                 "stays offline.")
         else:
-            self._sw_status.setText("Disabled. The app makes no network calls.")
+            self._sw_status.setText("Disabled. The app makes no network calls, except link "
+                                    "checks you start with Check links in Cosmos.")
 
     def _endpoints(self):
         return self.state.space_weather_endpoints() or dict(DEFAULT_ENDPOINTS)

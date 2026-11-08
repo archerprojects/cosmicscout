@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Cosmic Scout — main.py  (v1.0.1 — Sunday 8 November 2026)
+Cosmic Scout — main.py  (v1.1.0 — Monday 9 November 2026)
 
 Application entry point and MainWindow. A light shell with a top nav:
 
