@@ -41,66 +41,52 @@ weather, off by default) and the Cosmos link checks you start yourself.
 
 ## Install
 
-### 1. Prerequisites (once per machine)
+**The Cosmic Scout `.flatpak` file is not self-contained.** It needs the KDE 6.11
+runtime from Flathub, installed first. Run these in a terminal, in this order, and
+always use `--user`, as shown. Don't install it with an app store or Flatpak manager.
 
-**Flatpak.** Linux Mint and Fedora come with it. Check with:
-
-```bash
-flatpak --version
-```
-
-If that says "command not found" (Ubuntu, Debian and others), install it:
-
-```bash
-sudo apt install flatpak
-```
-
-**Flathub**, where the runtime comes from. Mint already has it; adding it again does no harm:
+**1. Flatpak and Flathub (once per machine).** Linux Mint and Fedora already have
+Flatpak; on Ubuntu or Debian, first run `sudo apt install flatpak`. Then:
 
 ```bash
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 ```
 
-### 2. Install the runtime (once per machine)
-
-Cosmic Scout runs on the KDE 6.11 runtime (about 415 MB download, 1.1 GB installed):
+**2. The runtime (once per machine).** About 415 MB:
 
 ```bash
 flatpak install --user flathub org.kde.Platform//6.11
 ```
 
-### 3. Download Cosmic Scout
-
-This link always gives the latest version:
+**3. Cosmic Scout.** Download the latest version:
 https://github.com/archerprojects/cosmicscout/releases/latest/download/CosmicScout-x86_64.flatpak
 
-### 4. Install Cosmic Scout
-
-In the folder you downloaded it to:
+then, in the folder you saved it to:
 
 ```bash
 flatpak install --user CosmicScout-x86_64.flatpak
 ```
 
-### 5. Run
-
-Open **Cosmic Scout** from the Education menu, or:
+**4. Run.** Open **Cosmic Scout** from the Education menu, or:
 
 ```bash
 flatpak run org.cosmicscout.app
 ```
 
-### Updating
+### Update
 
-Cosmic Scout doesn't update itself. To update, repeat steps 3 and 4: the new version
-installs over the old one, and your profiles and journal are kept.
+Download the latest version again and repeat step 3. Your profiles and journal are kept.
 
-**Coming from 1.0.0?** If Cosmic Scout won't start after updating, remove it and
-install again (your data is kept):
+Use the command in step 3, not an app store or Flatpak manager. Those can install into
+the system installation, beside your existing copy, and the older copy keeps starting.
+
+### If Cosmic Scout won't start
+
+Remove every copy, then repeat steps 2 and 3 (your data is kept):
 
 ```bash
 flatpak uninstall --user org.cosmicscout.app
-flatpak install --user CosmicScout-x86_64.flatpak
+flatpak uninstall --system org.cosmicscout.app
 ```
 
 ## Build from source (developers only, not needed to install)
