@@ -61,12 +61,20 @@ sudo apt install flatpak
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 ```
 
-### 2. Download Cosmic Scout
+### 2. Install the runtime (once per machine)
+
+Cosmic Scout runs on the KDE 6.11 runtime (about 415 MB download, 1.1 GB installed):
+
+```bash
+flatpak install --user flathub org.kde.Platform//6.11
+```
+
+### 3. Download Cosmic Scout
 
 This link always gives the latest version:
 https://github.com/archerprojects/cosmicscout/releases/latest/download/CosmicScout-x86_64.flatpak
 
-### 3. Install
+### 4. Install Cosmic Scout
 
 In the folder you downloaded it to:
 
@@ -74,10 +82,7 @@ In the folder you downloaded it to:
 flatpak install --user CosmicScout-x86_64.flatpak
 ```
 
-The first install also downloads the KDE 6.11 runtime from Flathub (about 415 MB,
-1.1 GB installed). Later installs reuse it.
-
-### 4. Run
+### 5. Run
 
 Open **Cosmic Scout** from the Education menu, or:
 
@@ -87,7 +92,7 @@ flatpak run org.cosmicscout.app
 
 ### Updating
 
-Cosmic Scout doesn't update itself. To update, repeat steps 2 and 3: the new version
+Cosmic Scout doesn't update itself. To update, repeat steps 3 and 4: the new version
 installs over the old one, and your profiles and journal are kept.
 
 **Coming from 1.0.0?** If Cosmic Scout won't start after updating, remove it and
@@ -98,7 +103,7 @@ flatpak uninstall --user org.cosmicscout.app
 flatpak install --user CosmicScout-x86_64.flatpak
 ```
 
-## Build from source
+## Build from source (developers only, not needed to install)
 
 Run from source:
 
